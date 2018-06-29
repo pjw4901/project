@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.javateam.springBoard.vo.BoardMapper">
+
+
+	<insert id="insert" parameterType="BoardVO">
+		INSERT INTO board_tbl
+			VALUES (HIBERNATE_SEQUENCE.NEXTVAL,
+					#{boardContent},
+					#{boardDate},
+					#{boardFile},
+					#{boardName},
+					#{boardPass},
+					#{boardReLev},
+					#{boardReRef},
+					#{boardReSeq},
+					#{boardReadCount},
+					#{boardSubject})
+	</insert>
+	
+	<select id="getListByPageAndLimit"
+			parameterType="hashmap"
+			resultType="BoardVO">
+			
+			SELECT * FROM ( 
+						SELECT 
+							m.*,
+							FLOOR((ROWNUM - 1)/#{limit} + 1) page
+						FROM (
+								SELECT * FROM board_tbl
+								ORDER BY BOARD_RE_REF DESC, BOARD_RE_SEQ ASC
+							) m
+						)
+				WHERE page = #{page}
+	
+	</select>
+	
+	<select id="list" resultType="BoardVO">
+		SELECT * FROM board_tbl	
+	</select>
+	
+	<select id="get" parameterType="int" resultType="BoardVO">
+		SELECT * FROM board_tbl WHERE board_num=#{boardNum}
+	</select>
+	
+	<update id="update" parameterType="BoardVO">
+		UPDATE board_tbl SET
+			   board_content=#{boardContent},
+			   board_subject=#{boardSubject},
+			   board_file=#{boardFile, jdbcType=VARCHAR},
+			   board_date=#{boardDate}
+		 WHERE board_num=#{boardNum}
+	</update>
+	
+	<update id="updateReadCount" parameterType="int">
+		UPDATE board_tbl SET
+			   board_read_count = board_read_count +1
+		 WHERE board_num=#{boardNum}
+	</update>
+	
+	
+
+</mapper>

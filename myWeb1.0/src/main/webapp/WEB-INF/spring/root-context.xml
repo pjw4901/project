@@ -1,0 +1,122 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.8.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+   
+    <tx:annotation-driven />
+   
+    <!-- Root Context: defines shared resources visible to all other web components -->
+    <bean id="dataSource"
+       class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+         <property name="driverClass" value="oracle.jdbc.OracleDriver" />
+         <property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />
+         <property name="username" value="egov" />
+         <property name="password" value="egov" />
+    </bean>
+    
+   
+    <!-- myBatis -->
+ 	 <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+         <property name="dataSource" ref="dataSource" />
+     </bean>
+     
+    <bean id="transactionTemplate"
+          class="org.springframework.transaction.support.TransactionTemplate"
+          p:transactionManager-ref="transactionManager" />
+ 
+     <bean id="sqlSessionFactory"
+           class="org.mybatis.spring.SqlSessionFactoryBean">
+         <property name="dataSource" ref="dataSource" />
+         <property name="typeAliasesPackage"
+                    value="com.javateam.springBoard.vo" />
+         <property name="mapperLocations"
+                    value="classpath:com/javateam/springBoard/vo/*.xml" />
+         <property name="configLocation"
+               value="classpath:/META-INF/mybatis-config.xml" />
+     </bean>     
+    
+
+     <bean id="sqlSession"
+           class="org.mybatis.spring.SqlSessionTemplate">
+          <constructor-arg name="sqlSessionFactory"
+                        ref="sqlSessionFactory" />
+     </bean>
+     
+     
+     <!-- Hibernate  -->
+    <bean id="transactionManagerHiber"
+        class="org.springframework.orm.hibernate5.HibernateTransactionManager"
+        p:sessionFactory-ref="sessionFactory" />
+ 
+    <bean id="sessionFactory"
+        class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="packagesToScan" value="com.javateam.springBoard.vo" />
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+    </bean>
+   
+
+    <!-- Spring/JPA -->				
+    <!-- <jpa:repositories base-package="com.javateam.springBoard.repository" />
+   
+    <bean class="org.springframework.orm.jpa.JpaTransactionManager"
+         id="transactionManager">
+         
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+        <property name="jpaDialect">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
+        </property>
+    </bean>
+   
+    <bean id="entityManagerFactory"
+         class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+       
+        <property name="dataSource" ref="dataSource" />
+        <property name="packagesToScan" value="com.javateam.springBoard.vo"/>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="generateDdl" value="true" />
+                <property name="showSql" value="true"/>
+                <property name="databasePlatform"
+                         value="org.hibernate.dialect.Oracle10gDialect"/>
+                <property name="database" value="ORACLE"/>
+            </bean>
+        </property>
+        <property name="jpaProperties">
+            <value>hibernate.cache.use_second_level_cache = true
+                   hibernate.cache.region.factory_class = org.hibernate.cache.ehcache.EhCacheRegionFactory
+                   hibernate.cache.use_query_cache = true
+                   hibernate.generate_statistics = true
+            </value>
+        </property>
+    </bean> -->
+   
+    <!-- Root Context: defines shared resources visible to all other web components -->
+    <!-- Fileupload : 파일 관리자 id(multipartResolver)는 가급적 그대로 사용할 것! -->
+     <bean id="multipartResolver"
+                class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+                  <property name="maxUploadSize" value="5000000" />  <!-- 파일 크기 제한 : 50MB -->
+    </bean>          
+   
+    <!-- File repository : 파일 저장소 -->
+    <bean id="uploadDirResource" class="org.springframework.core.io.FileSystemResource">
+        <constructor-arg>
+          <value>E:\\lsh\\fileupload\\</value>
+          <!--<value>E:/fileUpload/upload/</value> -->
+        </constructor-arg>
+    </bean>
+   
+</beans>
