@@ -33,14 +33,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class HomeController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	@Autowired
 	AuthJdbcService authJdbcService;
 	
 	@RequestMapping("/")
 	public String mainhome(){
-		return "redirect:/mainpage";
+		return "redirect:/html/index.html";
 	}
 	
 	@RequestMapping("/mainpage")

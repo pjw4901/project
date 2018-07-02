@@ -17,6 +17,12 @@
 
 	<!-- javascript -->
 	<resources mapping="/js/**" location="/resources/js/" />
+	
+	<!-- html bootstrap -->
+	<resources mapping="/htmlst/**" location="/resources/htmlst/" />
+	
+	<!-- 사용할 html 경로 -->
+    <resources mapping="/html/**" location="/WEB-INF/views/html/" />
 		
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
