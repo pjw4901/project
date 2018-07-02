@@ -2,7 +2,30 @@
 <%@ page session="true" pageEncoding="UTF-8"%>
 <html>
 <head>
-<title>Login Page</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Clean Blog - Start Bootstrap Theme</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../htmlst/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- BootstrapCSS -->
+    <link rel="stylesheet" 
+		  href="<c:url value='/js/bootstrap/3.3.7/css/bootstrap.min.css/' />">
+
+    <!-- Custom fonts for this template -->
+    <link href="../htmlst/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- Custom styles for this template -->
+	<link href="../htmlst/css/clean-blog.min.css" rel="stylesheet">
+
+<title>로그인 페이지</title>
 <style>
 .error {
 			padding: 15px;
@@ -23,9 +46,12 @@
 		background-color: #d9edf7;
 		border-color: #bce8f1;
 	}
-
+.input-group {
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
 #login-box {
-				width: 300px;
+				width: 800px;
 				padding: 20px;
 				margin: 0px auto;
 				background: #fff;
@@ -34,6 +60,7 @@
 				border-radius: 10px;
 				border: 1px solid #000;
 			}
+
 </style>
 
 <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
@@ -158,9 +185,27 @@ $(document).ready(function() {
 </head>
 <body>
 
+    <!-- Page Header -->
+    <header class="masthead">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-md-10 mx-auto">
+            <div class="site-heading">
+              <h1>Relation Chanel lol</h1>
+              <span class="subheading">이미지 추가</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+
+
+
 	<div id="login-box">
 
-		<h3>Login</h3>
+		<h3 align="center">Login</h3>
 
 		<c:if test="${not empty error}">
 			<div class="error">${error}</div>
@@ -179,33 +224,36 @@ $(document).ready(function() {
 			  name="loginForm" 
 			  action="<c:url value='${pageContext.request.contextPath}/j_spring_security_check' />"
 			  method="POST">
-
-			<table>
-				<tr>
-					<td>ID :</td>
+	
+    <!-- Main Content -->
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
 					<!-- <td><input type="text" 
 					  		   id="userid"
 							   name="userid"
 							   size="25"
 							   maxlength="20"></td> -->
-					<td><input type="text" 
+			<div class="input-group">
+				<span class="input-group-addon"><i class="fa fa-address-card-o fa-lg" aria-hidden="true"></i></span>
+					<input type="text" 
 							   id = "j_username"	
 							   name="j_username" />
-				</tr>
-				<tr>
-					<td>PW :</td>
+			</div>
+				
 					<!-- <td><input type="password" 
 							   id="userpw"
 							   name="userpw" 
 							   size="25"
 							   maxlength="20"/></td> -->
-					<td><input type="password" 
+			<div class="input-group">
+				<span class="input-group-addon"><i class="fa fa-shield fa-lg" aria-hidden="true"></i></span>
+					<input type="password" 
 							   id="j_password"
 							   name="j_password" />
-				</tr>
+			</div>
 
-				<tr>
-					<td colspan="2">
+
 						<input id="login" 
 							   name="login" 
 							   type="button"
@@ -215,11 +263,11 @@ $(document).ready(function() {
 					    	   type="button"
 							   value="join"
 							   onclick="location.href='${pageContext.request.contextPath}/join'" />
-					</td>
-				</tr>
 
-			</table>
 
+		</div>
+      </div>
+    </div>
  			<!-- Spring Security CSRF Token : 필히 기입할 것 ! -->
 			<%-- <input type="hidden" 
 				   name="${_csrf.parameterName}"
