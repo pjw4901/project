@@ -53,7 +53,7 @@ table {
 		<h2>게시판 글등록</h2>
 		
 		<form:form modelAttribute="board" 
-			   	   action="${pageContext.request.contextPath}/board/writeAction.do?${_csrf.parameterName}=${_csrf.token}" 
+			   	   action="${pageContext.request.contextPath}/board/writeAction.do" 
 			       method="post"	
 			       enctype="multipart/form-data"		  	   
 			  	   name="boardform">
@@ -63,7 +63,7 @@ table {
 					<td class="td_left"><label for="boardName">글쓴이</label></td>
 					<td class="td_right"><input type="text" name="boardName"
 						id="boardName" required="required" />
-						<form:errors path="boardName" />
+						<form:errors path="boardName" cssClass="formErr"  />
 					</td>
 				</tr>
 				<tr>
@@ -96,10 +96,10 @@ table {
 			</section>
 			
 			<!-- Spring Security Auth(CSRF) Token : 반드시 기입! 없으면 에러 출력됨 !-->
-			<input type="hidden" name="${_csrf.parameterName}"
+			<%-- <input type="hidden" name="${_csrf.parameterName}"
 					value="${_csrf.token}" />
 					
-			csrf = ${_csrf.parameterName}
+			csrf = ${_csrf.parameterName} --%>
 			
 		</form:form>
 		

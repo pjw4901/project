@@ -8,23 +8,25 @@ public class Users {
 	private String role;
 	private String userjoin;
 	private int enabled;
+	private String lolname;
 	
 	public Users() {}
 	
 	
-	public Users(String userid, String username, String userpw, String role, String userjoin, int enabled) {
+	public Users(String userid, String username, String userpw, String role, String userjoin, int enabled, String lolname) {
 		this.userid = userid;
 		this.username = username;
 		this.userpw = userpw;
 		this.role = role;
 		this.userjoin = userjoin;
 		this.enabled = enabled;
+		this.lolname = lolname;
 	}
 
 	@Override
 	public String toString() {
 		return "Users [userid=" + userid + ", username=" + username + ", userpw=" + userpw + ", role=" + role
-				+ ", userjoin=" + userjoin + ", enabled=" + enabled + "]";
+				+ ", userjoin=" + userjoin + ", enabled=" + enabled + ", lolname=" + lolname + "]";
 	}
 	
 	public String getUserid() {
@@ -62,6 +64,12 @@ public class Users {
 	}
 	public void setEnabled(int enabled) {
 		this.enabled = enabled;
+	}
+	public String getLolname(){
+		return lolname;
+	}
+	public void setLolname(String lolname){
+		this.lolname = lolname;
 	}
 	
 	

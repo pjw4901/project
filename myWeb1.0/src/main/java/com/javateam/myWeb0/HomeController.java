@@ -69,7 +69,9 @@ public class HomeController {
 	@RequestMapping("/joinAction")
 	public void join(@RequestParam("userid") String userid,
 					@RequestParam("userpw") String userpw,
-					@RequestParam("username") String username){
+					@RequestParam("userpw2") String userpw2,
+					@RequestParam("username") String username,
+					@RequestParam("lolname") String lolname){
 		
 		log.info("/joinAction");
 		
@@ -85,7 +87,7 @@ public class HomeController {
    
         System.out.println(dateString);
 		
-		Users users = new Users(userid, username, hashedPassword, "ROLE_USER", dateString, 1);
+		Users users = new Users(userid, username, hashedPassword, "ROLE_USER", dateString, 1, lolname);
 		
 		authJdbcService.insertUsers(users);
 

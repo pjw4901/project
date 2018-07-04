@@ -47,7 +47,7 @@ public class AuthJdbcService {
 	
     public void insertUsers(Users users) {
     	
-    	String sql  = "INSERT INTO users VALUES (?,?,?,?,?,1)";
+    	String sql  = "INSERT INTO users VALUES (?,?,?,?,?,1,?)";
     	String sql2 = "INSERT INTO users_role VALUES "
     				+ "(?,?,?)";
     	
@@ -56,7 +56,8 @@ public class AuthJdbcService {
 											    users.getUsername(),
 											    users.getUserpw(),
 											    users.getRole(),
-											    users.getUserjoin() });
+											    users.getUserjoin(),
+											    users.getLolname()});
     	
     	this.jdbcTemplate.update(sql2, 
     							 new Object[] { users.getUserid(),
