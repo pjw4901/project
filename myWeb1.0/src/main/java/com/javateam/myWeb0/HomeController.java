@@ -97,7 +97,7 @@ public class HomeController {
 	@RequestMapping("/search")
 	public void searchParse(Model model) throws UnsupportedEncodingException{
 		
-		String api_key="RGAPI-ff444727-9804-4874-83a4-0c88ed8905ac";
+		String api_key="RGAPI-3f3b9b3a-a631-48b6-9512-be6c6d374260";
 		
 		String gamename = "정글로다이아간다";
 		

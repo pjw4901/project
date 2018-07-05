@@ -1,9 +1,10 @@
 <%@ page contentType="text/html; charset=UTF-8"
     	 pageEncoding="UTF-8"%>
-    
+    	 
+    	   
     <!-- 게시글정보 보기(팝업) -->
 	<div class="modal fade" id="myModal" role="dialog">
-	  <div class="modal-dialog modal-sm">
+	  <div class="modal-dialog modal-lg">
 	  
 	    <div class="modal-content">
 	      <div class="modal-header">
@@ -13,20 +14,20 @@
 	      
 	      <div id="article_content" class="modal-body form-group">
 
-              <label for="boardNum" class="col-sm-5 control-label label_top_padding">글번호 :</label>
-              <div class="col-sm-7"> 
+              <label for="boardNum" class="col-xs-2 control-label label_top_padding">글번호 :</label>
+              <div class="col-sm-10"> 
               	   <input type="text" id="boardNum" 
               	   		  class="form-control input-sm fld_back" readonly /><br>
               </div>
               
-              <label for="boardName" class="col-sm-5 control-label label_top_padding">글쓴이 :</label>
-              <div class="col-sm-7"> 
+              <label for="boardName" class="col-xs-2 control-label label_top_padding">글쓴이 :</label>
+              <div class="col-sm-10"> 
               	   <input type="text" id="boardName" 
               	   		  class="form-control input-sm fld_back" readonly /><br>
               </div>
               		
-              <label for="boardSubject" class="col-sm-5 control-label label_top_padding">글제목 :</label>
-              <div class="col-sm-7"> 
+              <label for="boardSubject" class="col-xs-2 control-label label_top_padding">글제목 :</label>
+              <div class="col-sm-10"> 
               		<input type="text" id="boardSubject" 
               			   class="form-control input-sm fld_back" readonly /><br>
               </div>

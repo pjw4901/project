@@ -3,7 +3,7 @@
 	<!-- 게시글정보 수정(팝업) -->
 	<div class="modal fade" id="updateModal">
          
-	  <div class="modal-dialog modal-sm">
+	  <div class="modal-dialog modal-lg">
 	  
 	  <!-- form -->
 	  <form id="updateForm" 
@@ -18,11 +18,11 @@
 	        <h4 class="modal-title">게시글 수정</h4>
 	      </div>
 	      
-	      <div id="article_content" class="modal-body form-group" style="height:400px">
+	      <div id="article_content" class="modal-body form-group">
 
               <label for="update_boardNum" 
-              		 class="col-sm-5 control-label label_top_padding">글번호 :</label>
-              <div class="col-sm-7"> 
+              		 class="col-xs-2 control-label label_top_padding">글번호 :</label>
+              <div class="col-sm-10"> 
               	   <input type="text" 
               	   		  id="update_boardNum" 
               	   		  name="update_boardNum"
@@ -30,8 +30,8 @@
               </div>
               
               <label for="update_boardName" 
-              		 class="col-sm-5 control-label label_top_padding">글쓴이 :</label>
-              <div class="col-sm-7"> 
+              		 class="col-xs-2 control-label label_top_padding">글쓴이 :</label>
+              <div class="col-sm-10"> 
               	   <input type="text" 
               	   		  id="update_boardName" 
               	   		  name="update_boardName"
@@ -39,15 +39,15 @@
               </div>
               		
               <label for="update_boardSubject" 
-              		 class="col-sm-5 control-label label_top_padding">글제목 :</label>
-              <div class="col-sm-7"> 
+              		 class="col-xs-2 control-label label_top_padding">글제목 :</label>
+              <div class="col-sm-10"> 
             		<input type="text" 
             			   id="update_boardSubject"
             			   name="update_boardSubject" 
             			   class="form-control input-sm fld_back" />
              </div>
               		
-              <label for="update_boardContent"
+             <label for="update_boardContent"
               		 class="col-sm-5 control-label label_top_padding">글내용 :</label><br>
            		<textarea id="update_boardContent" 
            				  name="update_boardContent" 

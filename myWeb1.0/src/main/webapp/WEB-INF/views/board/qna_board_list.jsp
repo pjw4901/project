@@ -7,9 +7,9 @@
 <meta charset="UTF-8">
 <title>MVC 게시판</title>
 
-	<!-- bootstrap CSS : 3.3.7 -->
+ 	<!-- bootstrap CSS : 3.3.7 -->
 	<link rel="stylesheet" 
-		  href="<c:url value='/js/bootstrap/3.3.7/css/bootstrap.min.css/' />">
+		  href="<c:url value='/js/bootstrap/3.3.7/css/bootstrap.min.css/' />"> 
 	
 	<!-- jasny-bootstrap : 사설(custom) bootstrap file field 기능 추가 -->		  
 	<link rel="stylesheet" 
@@ -23,25 +23,15 @@
 
 	<!-- jasny-bootstrap : 사설(custom) bootstrap file field 기능 추가 -->
 	<script src="<c:url value='/js/bootstrap/jasny-bootstrap/jasny-bootstrap.js' />"></script>
+    
+    <!-- Custom fonts for this template -->
+    <link rel="stylesheet" type="text/css" href="<c:url value='/htmlst/vendor/font-awesome/css/font-awesome.min.css' /> ">
+ 
+	<!-- Custom styles for this template -->
+	<link href="<c:url value='/htmlst/css/clean-blog_board.css'/> " rel="stylesheet">
 	
 	<style type="text/css">
-	/* 등록된 글이 없을 경우, 페이징 처리 */
-	#emptyArea, #pageList  
-	{
-		margin: auto;
-		text-align: center;
-	}
-		/* 필드 배경색 */
-	.fld_back { background : yellow } 
-	
-	/* 라벨 상위 간격 */
-	.label_top_padding { padding-top:4px; }
-	
-	/* 텍스트 필드 */
-	.textarea_fld { width:85%; margin:20px; resize: none; }
-	
-	/* readonly 상태시 */
-	*[readonly].form-control { background-color:transparent; }
+
 	
 	</style>
 	<script>
@@ -52,15 +42,16 @@
 			
 			var boardNum = e.target.id.substring(9); // "boardNum_" 뒤부분 "글번호" 취득
 			alert(boardNum);
-			var page = $("#nowPage").html();
+			var page = /* $("#nowPage").html() */${pageInfo.page};
 			
 			$.ajax ({
 				url : "${pageContext.request.contextPath}/board/boardDetailJSON.do/boardNum/"
-						+boardNum+"/page/"+page+"?${_csrf.parameterName}=${_csrf.token}",
+						+boardNum+"/page/"+page,
 				contentType : "application/json",
 				type : "POST",
 				success : function (json) {
 				
+					alert("성공")
 					var article = JSON.parse(JSON.stringify(json));
 					
 					
@@ -178,17 +169,60 @@
 	</script>
 </head>
 
-<body ng-app="boardUploadModal">
+<body>
 
-	<!-- 인자들 -->
- 	<div>
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse" id="mainNav">
+      <div class="container-fluid">
+      	<div class="navbar-header">
+        	<a class="navbar-brand" href="index.html">LOL.DUO</a>
+        </div>
+          <ul class="nav navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="../html/index.html">홈</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="about.html">전적검색</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../board/list.do/1">게시판</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contact.html">게임리스트</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../login">
+              <i class="fa fa-user-circle-o" aria-hidden="true"></i>로그인
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="masthead">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-10 col-md-10 mx-auto">
+            <div class="site-heading">
+              <h1><i class="fa fa-handshake-o" aria-hidden="true"></i>&nbsp;&nbsp;LOL.DUO</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+ 	<!-- 인자들 -->
+ 	<div class="hidden">
 		총 게시글 수 : ${pageInfo.listCount}<br>
 		현재 페이지 : <span id="nowPage">${pageInfo.page}</span><br>
 		총 페이지 : ${pageInfo.maxPage}<br>
 		시작 페이지 : ${pageInfo.startPage}<br>
 		끝 페이지 : ${pageInfo.endPage}
-	</div> 
-	
+	</div>
+
+
 	<!-- 게시글정보 보기(팝업) 시작 -->
 	<%@ include file="boardViewModal.jsp" %>
 	<!-- 게시글정보 보기(팝업) 끝 -->
@@ -196,20 +230,23 @@
 	<!-- 게시글정보 수정(팝업) 시작 -->
 	<%@ include file="boardUpdateModal.jsp" %>
 	<!-- 게시글정보 수정(팝업) 끝 -->
-	
-	<h3 align="center">
-		글 목록   &nbsp;<a href="${pageContext.request.contextPath}/board/write.do">게시판글쓰기</a>
-	</h3>
+
+    <!-- Main Content -->
+    <div class="container" ng-app="boardUploadModal">
+      <div class="row">
+        <div class="col-lg-12 col-md-12 mx-auto">
+        	
+	<h2 align="center">글 목록 </h2>
 	<br>
 	
 	<!-- 게시판 리스트 시작 -->
-	<section id="listForm" style="width:800px; margin:auto;">
+	<section id="listForm" style="width:1100px; margin:auto;">
 		
     	<c:if test="${not empty articleList && pageInfo.listCount > 0}">
 		
 			<!-- 게시글 부분 시작 -->
-			<table id="board_tbl" class="table table-striped table-hover">
-			
+			<table id="board_tbl" class="table table-hover table-bordered">
+				<thead>
 				<tr id="tr_top">
 				    <td>번호</td>
 					<td>글번호</td>
@@ -218,6 +255,7 @@
 					<td>날짜</td>
 					<td>조회수</td>
 				</tr>
+				</thead>
 	
 				<c:forEach var="article" items="${articleList}" varStatus="st">
 					
@@ -225,7 +263,7 @@
 						<td>${st.count + (pageInfo.page-1)*10}</td>
 						<td>${article.boardNum}</td>
 		
-						<td>
+						<td class="boardsubjectcl">
 							<c:choose>
 								<c:when test="${article.boardReLev != 0}">
 									<c:forEach var="a" 
@@ -250,9 +288,13 @@
 										data-target="#myModal">
 								${article.boardSubject}
 							</a>
+							<c:if test="${article.boardReadCount >= 20}">
+                  				<!-- <span class="hit">hit!</span> -->
+                  				<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+               				</c:if>
 						</td>
 		
-						<td>${article.boardName}</td>
+						<td class="boardnamecl"><a>${article.boardName}</a></td>
 						<td> <%-- boardDate Format 맞추기 --%>
 							<fmt:parseDate var="tmp" value="${article.boardDate}" pattern="yyyy-MM-dd HH:mm:ss" />
 							<fmt:formatDate value="${tmp}" pattern="yyyy년MM월dd일 HH:mm:ss"/>
@@ -266,9 +308,11 @@
 					
 			</table>
 			<!-- 게시글 부분 끝 -->
-		
+			<div style="display: block; text-align: right;">
+				<button class="btn btn-info btn-sm" onclick= "location.href='${pageContext.request.contextPath}/board/write.do'">게시판글쓰기</button>
+			</div>
 		    <!-- 페이징(paging) -->
-			<section id="pageList">
+			<section id="pageList" style="text-align: center;">
 			    
 			    <ul class="pagination">
 			    
@@ -320,16 +364,51 @@
 		<c:if test="${empty articleList || pageInfo.listCount==0}">
 			<section id="emptyArea">등록된 글이 없습니다.</section>
 		</c:if> 
-		
-		<!-- Spring Security Auth(CSRF) Token : 반드시 기입! 없으면 에러 출력됨 !-->
-			<input type="hidden" name="${_csrf.parameterName}"
-					value="${_csrf.token}" />
 	
 	</section>
 	<!-- 게시판 리스트 끝 -->
 	
-
-					
+			</div>
+		</div>
+	</div>
+	
+	<hr />
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-md-10 mx-auto">
+            <ul class="list-inline text-center">
+              <li class="list-inline-item">
+                <a href="#">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a href="#">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a href="#">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+            </ul>
+            <p class="copyright text-muted">Copyright &copy; LOL.DUO Website 2018</p>
+          </div>
+        </div>
+      </div>
+    </footer>					
 	
 </body>
 </html>
