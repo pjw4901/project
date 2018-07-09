@@ -31,6 +31,15 @@
 	<link href="<c:url value='/htmlst/css/clean-blog_board.css'/> " rel="stylesheet">
 	
 	<style type="text/css">
+	
+	#mainNav {
+	    position: relative;
+	    min-height: 50px;
+	    margin-bottom: 0px;
+	    border: 0px;
+	    background: linear-gradient(52deg, #5383e8, #3991ef 31%, #3892f0 32%, #3594f1 36%, #3594f1);
+	    border-radius: 0px;
+	}
 
 	
 	</style>
@@ -171,35 +180,47 @@
 
 <body>
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-inverse" id="mainNav">
-      <div class="container-fluid">
-      	<div class="navbar-header">
-        	<a class="navbar-brand" href="index.html">LOL.DUO</a>
-        </div>
-          <ul class="nav navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link" href="../html/index.html">홈</a>
+	<!-- <form class="navbar-form navbar-left" role="search">
+	        <div class="form-group">
+	          <input type="text" class="form-control" placeholder="Search">
+	        </div>
+	        <button type="submit" class="btn btn-default">Submit</button>
+	      </form> -->
+	      
+	 <!-- Navigation -->
+	<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+	  <div class="container-fluid">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+	        <i class="fa fa-bars"></i>
+	      </button>
+	      <a class="navbar-brand" href="${pageContext.request.contextPath}/html/index.html">LOL.DUO</a>
+	    </div>
+
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	      <ul class="nav navbar-nav navbar-right">
+	       <li class="nav-item">
+              <a class="nav-link" href="${pageContext.request.contextPath}/html/index.html">홈</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="about.html">전적검색</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="../board/list.do/1">게시판</a>
+              <a class="nav-link" href="${pageContext.request.contextPath}/board/list.do/1">게시판</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="contact.html">게임리스트</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="../login">
+              <a class="nav-link" href="${pageContext.request.contextPath}/login">
               <i class="fa fa-user-circle-o" aria-hidden="true"></i>로그인
               </a>
             </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-
+	      </ul>
+	    </div><!-- /.navbar-collapse -->
+	  </div><!-- /.container-fluid -->
+	</nav>	    
     <!-- Page Header -->
     <header class="masthead">
       <div class="overlay"></div>
@@ -213,6 +234,7 @@
         </div>
       </div>
     </header>
+    
  	<!-- 인자들 -->
  	<div class="hidden">
 		총 게시글 수 : ${pageInfo.listCount}<br>
@@ -240,7 +262,7 @@
 	<br>
 	
 	<!-- 게시판 리스트 시작 -->
-	<section id="listForm" style="width:1100px; margin:auto;">
+	<section id="listForm" style=" margin:auto;">
 		
     	<c:if test="${not empty articleList && pageInfo.listCount > 0}">
 		
@@ -362,7 +384,10 @@
 	
 		<!-- 등록글 없을 경우 -->
 		<c:if test="${empty articleList || pageInfo.listCount==0}">
-			<section id="emptyArea">등록된 글이 없습니다.</section>
+			<section id="emptyArea" style="text-align: center;">등록된 글이 없습니다.
+				<br />
+				<button class="btn btn-info btn-sm" onclick= "location.href='${pageContext.request.contextPath}/board/write.do'">게시판글쓰기</button>
+			</section>
 		</c:if> 
 	
 	</section>

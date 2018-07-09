@@ -6,10 +6,10 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -18,9 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
 import com.javateam.service.AuthJdbcService;
+import com.javateam.vo.IdParseVO;
 import com.javateam.vo.NameParseVO;
 import com.javateam.vo.Users;
 
@@ -93,13 +94,18 @@ public class HomeController {
 
 		
 	}
+	@RequestMapping("/searchSubmit")
+	public void searchSubmit(){
+		
+	}
 	
 	@RequestMapping("/search")
-	public void searchParse(Model model) throws UnsupportedEncodingException{
+	public String searchParse(Model model,
+							  @RequestParam("sumName") String sumname) throws UnsupportedEncodingException{
 		
-		String api_key="RGAPI-3f3b9b3a-a631-48b6-9512-be6c6d374260";
+		String api_key="RGAPI-717d2ac4-1dc7-448b-a528-514ef19f2429";
 		
-		String gamename = "정글로다이아간다";
+		String gamename = sumname;
 		
 		String gamename_Decode = URLDecoder.decode(gamename, "UTF-8");
 		
@@ -121,14 +127,56 @@ public class HomeController {
 			//Collection<NameParseVO> nameParse = objMapper.readValue(resultStr, new TypeReference<Collection<NameParseVO>>() { });
 			//NameParseVO[] nameParse = objMapper.readValue(resultStr, NameParseVO[].class);
 			NameParseVO nameParse = objMapper.readValue(resultStr, NameParseVO.class);
+			log.info("resultStr" + resultStr);
 			model.addAttribute("result", nameParse);
 			log.info("List : " + nameParse);
-			System.out.println(nameParse.getAccountId());
+			System.out.println(nameParse.getId());
+			
+			try{
+				long summonerid = nameParse.getId();
+				
+				List<IdParseVO> idparseList
+		            = new ArrayList<IdParseVO>();
+				
+				String url2 = "https://kr.api.riotgames.com/lol/league/v3/positions/by-summoner/"
+							  +summonerid+"?api_key="+api_key;
+				resultStr = restTemplate.getForObject(url2, String.class);
+				log.info("resultStr2" + resultStr);
+				
+				CollectionType javaType = objMapper.getTypeFactory()
+		                  .constructCollectionType(List.class, IdParseVO.class);
+				
+				/*HashSet<IdParseVO> idParse = (HashSet<IdParseVO>) objMapper.readValue(resultStr, IdParseVO.class);*/
+				idparseList = objMapper.readValue(resultStr, javaType);
+				//model.addAttribute("result2", idparseList.get(0));
+				log.info("idParse : " + idparseList.get(0));
+				log.info("idParse : " + idparseList.size());
+				
+				if(idparseList.size() == 1){
+					if(idparseList.get(0).getQueueType().equals("RANKED_SOLO_5x5")){
+						model.addAttribute("resultSolo", idparseList.get(0));
+					}else if(idparseList.get(0).getQueueType().equals("RANKED_FLEX_SR")){
+						model.addAttribute("resultTeam", idparseList.get(0));
+					}
+				}else if(idparseList.size() == 2){
+					model.addAttribute("resultSolo", idparseList.get(0));
+					model.addAttribute("resultTeam", idparseList.get(1));
+				}else{
+					model.addAttribute("unranked", nameParse);
+				}
+
+				return "/search";
+			}catch(Exception e){
+				System.out.println("id parse error");
+				e.printStackTrace();
+			}
+			
 		} catch (IOException e) {
-			System.out.println("parse error");
+			System.out.println("name parse error");
 			e.printStackTrace();
 		}
 		
+		return "/search";
 		//log.info("parseList : " + parseList);
 		
 		//List<NameParseVO> result = parseList.getParseList();
