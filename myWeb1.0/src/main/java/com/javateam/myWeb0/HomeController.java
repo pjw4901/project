@@ -103,7 +103,7 @@ public class HomeController {
 	public String searchParse(Model model,
 							  @RequestParam("sumName") String sumname) throws UnsupportedEncodingException{
 		
-		String api_key="RGAPI-717d2ac4-1dc7-448b-a528-514ef19f2429";
+		String api_key="RGAPI-0cd68ae4-29fc-4d22-8532-983222c49b92";
 		
 		String gamename = sumname;
 		
@@ -155,12 +155,21 @@ public class HomeController {
 				if(idparseList.size() == 1){
 					if(idparseList.get(0).getQueueType().equals("RANKED_SOLO_5x5")){
 						model.addAttribute("resultSolo", idparseList.get(0));
+						model.addAttribute("modelSize", idparseList.size());
 					}else if(idparseList.get(0).getQueueType().equals("RANKED_FLEX_SR")){
 						model.addAttribute("resultTeam", idparseList.get(0));
+						model.addAttribute("modelSize", idparseList.size());
+						log.info("else if");
 					}
 				}else if(idparseList.size() == 2){
-					model.addAttribute("resultSolo", idparseList.get(0));
-					model.addAttribute("resultTeam", idparseList.get(1));
+					if(idparseList.get(0).getQueueType().equals("RANKED_SOLO_5x5")){
+						model.addAttribute("resultSolo", idparseList.get(0));
+						model.addAttribute("resultTeam", idparseList.get(1));
+					}
+					else{
+						model.addAttribute("resultTeam", idparseList.get(0));
+						model.addAttribute("resultSolo", idparseList.get(1));
+					}
 				}else{
 					model.addAttribute("unranked", nameParse);
 				}

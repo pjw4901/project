@@ -132,15 +132,34 @@
 	  display: inherit;
 	}
 	.tabContainer{
-		background: rgba(0, 123, 255, 0.03);
+		background:none;
+	}
+	.card{
+		background:none;
+		border: 0px;
+	}
+	.tierPng{
+		width: 250px;
+	}
+	.card-body{
+		padding: 0px;
+	}
+	.pieChart{
+		margin: auto;
+		text-align: center;
+	    width: 350px;
+	    height: 280px;
+	    margin-bottom: 5px;
+	}
+	.rankinfo{
+		padding-top: 40px;
 	}
 
 </style>
 <script>
 	
 	$(document).ready(function(){
-		   
-		  $('ul.tabs li').click(function(){
+		$('ul.tabs li').click(function(){
 		    var tab_id = $(this).attr('data-tab');
 		 
 		    $('ul.tabs li').removeClass('current');
@@ -148,17 +167,22 @@
 		 
 		    $(this).addClass('current');
 		    $("#"+tab_id).addClass('current');
-		  });
+		  }); //tab function
 		  
-		// chart colors
+		  var reswins = ${resultTeam.queueType == 'RANKED_FLEX_SR' &&modelSize == 1? 0:resultSolo.wins};
+		  var restotal = ${resultSolo.wins + resultSolo.losses};
+		  var percentage = reswins/restotal+100;
+		  
+		  // chart colors
 		  var colors = ['#007bff','#343a40'];
 		  
 		  /* 3 donut charts */
 		  var donutOptions = {
-		    cutoutPercentage: 85, 
+		    cutoutPercentage: 70,
+		    animateRotate: true,
 		    legend: {position:'bottom', padding:5, labels: {pointStyle:'circle', usePointStyle:true}}
 		  };
-
+	
 		  // donut 1
 		  var chDonutData1 = {
 		      labels: ['Wins', 'Losses'],
@@ -168,9 +192,9 @@
 		          borderWidth: 0,
 		          data: [${resultSolo.wins}, ${resultSolo.losses}]
 		        }
-		      ]
-		  };
-
+			   ]
+		  }
+	
 		  var chDonut1 = document.getElementById("chDonut1");
 		  if (chDonut1) {
 		    new Chart(chDonut1, {
@@ -178,10 +202,45 @@
 		        data: chDonutData1,
 		        options: donutOptions
 		    });
-		  }
+		  } //pie chart end
 		  
-		  
-		 
+		  //tab2 fun start
+		  $('#tab-2-btn').click(function(){
+			  var reswins2 = ${resultSolo.queueType == 'RANKED_SOLO_5x5'&&modelSize == 1?0:resultTeam.wins};
+			  var restotal2 = ${resultTeam.wins + resultSolo.losses};
+			  var percentage2 = reswins2/restotal2+100;
+			  
+			  // chart colors
+			  var colors = ['#007bff','#343a40'];
+			  
+			  /* 3 donut charts */
+			  var donutOptions = {
+			    cutoutPercentage: 70,
+			    animateRotate: true,
+			    legend: {position:'bottom', padding:5, labels: {pointStyle:'circle', usePointStyle:true}}
+			  };
+		
+			  // donut 1
+			  var chDonutData2 = {
+			      labels: ['Wins', 'Losses'],
+			      datasets: [
+			        {
+			          backgroundColor: colors.slice(0,2),
+			          borderWidth: 0,
+			          data: [${resultTeam.wins}, ${resultTeam.losses}]
+			        }
+				   ]
+			  }
+		
+			  var chDonut2 = document.getElementById("chDonut2");
+			  if (chDonut2) {
+			    new Chart(chDonut2, {
+			        type: 'pie',
+			        data: chDonutData2,
+			        options: donutOptions
+			    });
+			  } //pie chart end
+		  });
 		});
 
 </script>
@@ -194,6 +253,7 @@
     <span class="navbar-toggler-icon"></span>
   </button>
 
+<!-- nav bar start -->
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
@@ -212,11 +272,12 @@
     </form>
   </div>
 </nav>
+<!-- navbar end -->
 
    <!-- Main Content -->
    <div class="container" style="padding-top: 100px;">
 	<div class="row">
-       	<div class="col-lg-10 col-md-12 mx-auto">   
+     <div class="col-lg-10 col-md-12 mx-auto">   
        	
        	<div class="profileDiv">
        		<div>
@@ -237,116 +298,168 @@
 		 
 		  <ul class="tabs">
 		    <li class="tab-link current" data-tab="tab-1"><i class="fa fa-user" aria-hidden="true">&nbsp;</i>SOLO</li>
-		    <li class="tab-link" data-tab="tab-2"><i class="fa fa-user" aria-hidden="true">&nbsp;</i>TEAM</li>
+		    <li class="tab-link" data-tab="tab-2" id="tab-2-btn"><i class="fa fa-user" aria-hidden="true">&nbsp;</i>TEAM</li>
 		  </ul>
 		 
-		  <div id="tab-1" class="tab-content row current">
+
+		 <!-- SOLO rank tab start -->
+		 <div id="tab-1" class="tab-content row current">
 		  	<h1><i class="fa fa-user" aria-hidden="true">&nbsp;&nbsp;</i>SOLO 전적</h1>
-		  	<div class="col-lg-5" style="display: inline-block;">
 		  	
+		  	<div class="row">
+			  	<div class="col-lg-5" style="display: inline-block; text-align: center">
+			  	
+			  		<c:set var="tier1" value="${resultSolo.tier}" />
+	
+					<c:choose>
+					    <c:when test="${tier1 eq 'BRONZE'}">
+					    <div class="card" style="width:400px">
+					        <img class="tierPng" src="htmlst/css/lolimg/bronze.png">
+					        <h4 class="rankinfo">${resultSolo.tier}&nbsp;${resultSolo.rank}&nbsp;${resultSolo.leaguePoints}점</h4>
+					    </div>
+					    </c:when>
+					    <c:when test="${tier1 eq 'SILVER'}">
+					       <img class="tierPng" src="htmlst/css/lolimg/silver.png">
+					       <h4 class="rankinfo">${resultSolo.tier}&nbsp;${resultSolo.rank}&nbsp;${resultSolo.leaguePoints}점</h4>
+					    </c:when>
+					    <c:when test="${tier1 eq 'GOLD'}">
+					    	<img class="tierPng" src="htmlst/css/lolimg/gold.png">
+    						<h4 class="rankinfo">${resultSolo.tier}&nbsp;${resultSolo.rank}&nbsp;${resultSolo.leaguePoints}점</h4>
+					    </c:when>
+					    <c:when test="${tier1 eq 'PLATINUM'}">
+					        <img class="tierPng" src="htmlst/css/lolimg/platinum.png">
+					        <h4 class="rankinfo">${resultSolo.tier}&nbsp;${resultSolo.rank}&nbsp;${resultSolo.leaguePoints}점</h4>
+					    </c:when>
+					    <c:when test="${tier1 eq 'DIAMOND'}">
+					       <img class="tierPng" src="htmlst/css/lolimg/diamond.png">
+					       <h4 class="rankinfo">${resultSolo.tier}&nbsp;${resultSolo.rank}&nbsp;${resultSolo.leaguePoints}점</h4>
+					    </c:when>
+					    <c:when test="${tier1 eq 'MASTER'}">
+					        <img class="tierPng" src="htmlst/css/lolimg/master.png">
+					        <h4 class="rankinfo">${resultSolo.tier}&nbsp;${resultSolo.rank}&nbsp;${resultSolo.leaguePoints}점</h4>
+					    </c:when>
+					    <c:when test="${tier1 eq 'CHALLENGER'}">
+					       <img class="tierPng" src="htmlst/css/lolimg/challenger.png">
+					       <h4 class="rankinfo">${resultSolo.tier}&nbsp;${resultSolo.rank}&nbsp;${resultSolo.leaguePoints}점</h4>
+					    </c:when>
+					    <c:otherwise>
+					        <img class="tierPng" src="htmlst/css/lolimg/provisional.png">
+					        <a>시즌 초에는 배치고사 게임 후에 전적측정이 가능합니다.</a>
+					    </c:otherwise>
+					</c:choose>
+					
+				</div>
+				
+<%-- 			<c:choose>
+		 	  <c:when test="${resultTeam.queueType eq 'RANKED_FLEX_SR' || modelSize == 1 }">
+		 	   <div class="hidden" style="visibility: hidden;"> --%>
+				<div class="col-lg-7" style="display: inline-block;">
+					<div class="card">
+		                <div class="card-body">
+			                <p class="pieChart" align="center">
+			                    <canvas id="chDonut1" width="340px" height="280px"></canvas>
+			                    <%--   "width: 340px; height: 280px;  padding-left: 60px;" --%>
+			                </p>
+		                </div>
+		                <div class="card-footer" id="card-footer">
+		                	<script>
+			                  var reswins =  ${resultTeam.queueType == 'RANKED_FLEX_SR' &&modelSize == 1? 0:resultSolo.wins};
+			          		  var restotal = ${resultSolo.wins + resultSolo.losses};
+			        		  var percentage = reswins/restotal*100;
+			        		  document.getElementById("card-footer").innerHTML =
+			        			  '<div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" style="width:'+ Math.floor(percentage) + '%">' + Math.floor(percentage) + '%</div>';
+			        		</script>
+		                </div>
+		            </div>
+				</div><!-- card END -->
+<%-- 			   </div>
+			  </c:when>
+		 	</c:choose> --%>
+			
+			</div><!-- tab1 rowdiv End -->
+			
+			<div class="row" style=" margin-left: 0px; margin-right: 0px; margin-top: 60px;">
+				<h4>커뮤니티 전적</h4>
+			</div>
+			<div class="progress-bar progress-bar-striped progress-bar-animated " style="width:70%; margin-top: 10px;">70%</div>
 		  	
-		  		<c:set var="tier" value="${resultSolo.tier}" />
+		  </div><!-- tab1 end -->
+		  
+		  
+		  <div id="tab-2" class="tab-content row">
+		  	<h1><i class="fa fa-user" aria-hidden="true">&nbsp;&nbsp;</i>TEAM 전적</h1>
+		  	
+		  	<div class="row">
+			  	<div class="col-lg-5" style="display: inline-block; text-align: center">
+			  	
+				<c:set var="tier2" value="${resultTeam.tier}" />
 
 				<c:choose>
-				    <c:when test="${tier eq 'BRONZE'}">
+				    <c:when test="${tier2 eq 'BRONZE'}">
 				        <img class="tierPng" src="htmlst/css/lolimg/bronze.png">
+				        <h4 class="rankinfo">${resultTeam.tier}&nbsp;${resultTeam.rank}&nbsp;${resultTeam.leaguePoints}점</h4>
 				    </c:when>
-				    <c:when test="${tier eq 'SILVER'}">
+				    <c:when test="${tier2 eq 'SILVER'}">
 				       <img class="tierPng" src="htmlst/css/lolimg/silver.png">
+				       <h4 class="rankinfo">${resultTeam.tier}&nbsp;${resultTeam.rank}&nbsp;${resultTeam.leaguePoints}점</h4>
 				    </c:when>
-				    <c:when test="${tier eq 'GOLD'}">
+				    <c:when test="${tier2 eq 'GOLD'}">
 				       <img class="tierPng" src="htmlst/css/lolimg/gold.png">
+				       <h4 class="rankinfo">${resultTeam.tier}&nbsp;${resultTeam.rank}&nbsp;${resultTeam.leaguePoints}점</h4>
 				    </c:when>
-				    <c:when test="${tier eq 'PLATINUM'}">
+				    <c:when test="${tier2 eq 'PLATINUM'}">
 				        <img class="tierPng" src="htmlst/css/lolimg/platinum.png">
+				        <h4 class="rankinfo">${resultTeam.tier}&nbsp;${resultTeam.rank}&nbsp;${resultTeam.leaguePoints}점</h4>
 				    </c:when>
-				    <c:when test="${tier eq 'DIAMOND'}">
+				    <c:when test="${tier2 eq 'DIAMOND'}">
 				       <img class="tierPng" src="htmlst/css/lolimg/diamond.png">
+				       <h4 class="rankinfo">${resultTeam.tier}&nbsp;${resultTeam.rank}&nbsp;${resultTeam.leaguePoints}점</h4>
 				    </c:when>
-				    <c:when test="${tier eq 'MASTER'}">
+				    <c:when test="${tier2 eq 'MASTER'}">
 				        <img class="tierPng" src="htmlst/css/lolimg/master.png">
+				        <h4 class="rankinfo">${resultTeam.tier}&nbsp;${resultTeam.rank}&nbsp;${resultTeam.leaguePoints}점</h4>
 				    </c:when>
-				    <c:when test="${tier eq 'CHALLENGER'}">
+				    <c:when test="${tier2 eq 'CHALLENGER'}">
 				       <img class="tierPng" src="htmlst/css/lolimg/challenger.png">
+				       <h4 class="rankinfo">${resultTeam.tier}&nbsp;${resultTeam.rank}&nbsp;${resultTeam.leaguePoints}점</h4>
 				    </c:when>
 				    <c:otherwise>
 				        <img class="tierPng" src="htmlst/css/lolimg/provisional.png">
 				        <a>시즌 초에는 배치고사 게임 후에 전적측정이 가능합니다.</a>
 				    </c:otherwise>
 				</c:choose>
+					
+				</div>
 				
+				<div class="col-lg-7" style="display: inline-block;">
+					<div class="card">
+		                <div class="card-body">
+			                <p class="pieChart" align="center">
+			                    <canvas id="chDonut2" width="340px" height="280px"></canvas>
+			                </p>
+		                </div>
+		                <div class="card-footer" id="card-footer2">
+		                	<script>
+			                  var reswins2 = ${resultSolo.queueType == 'RANKED_SOLO_5x5'&&modelSize == 1?0:resultTeam.wins};
+			          		  var restotal2 = ${resultTeam.wins + resultTeam.losses};
+			        		  var percentage2 = reswins2/restotal2*100;
+			        		  document.getElementById("card-footer2").innerHTML =
+			        			  '<div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" style="width:'+ Math.floor(percentage2) + '%">' + Math.floor(percentage2) + '%</div>';
+			        		</script>
+		                </div>
+		            </div>
+				</div><!-- card END -->
+			
+			</div><!-- tab2 rowdiv End -->
+			
+			<div class="row" style=" margin-left: 0px; margin-right: 0px; margin-top: 60px;">
+				<h4>커뮤니티 전적</h4>
 			</div>
-			<div class="col-lg-5" style="display: inline-block;">
-				<div class="card">
-	                <div class="card-body">
-	                    <canvas id="chDonut1"></canvas>
-	                </div>
-	            </div>
-			</div>
-		  	
-<%-- 				<input type="text" id="queueType" name="queueType" value="${resultSolo.queueType}"/>
-				<input type="text" id="hotStreak" name="hotStreak" value="${resultSolo.hotStreak}"/>
-				<input type="text" id="wins" name="wins" value="${resultSolo.wins}"/>
-				<input type="text" id="veteran" name="veteran" value="${resultSolo.veteran}"/>
-				<input type="text" id="losses" name="losses" value="${resultSolo.losses}"/>
-				<input type="text" id="playerOrTeamId" name="playerOrTeamId" value="${resultSolo.playerOrTeamId}"/>
-				<input type="text" id="leagueName" name="leagueName" value="${resultSolo.leagueName}"/>
-				<input type="text" id="playerOrTeamName" name="playerOrTeamName" value="${resultSolo.playerOrTeamName}"/>
-				<input type="text" id="inactive" name="inactive" value="${resultSolo.inactive}"/>
-				<input type="text" id="rank" name="rank" value="${resultSolo.rank}"/>
-				<input type="text" id="freshBlood" name="freshBlood" value="${resultSolo.freshBlood}"/>
-				<input type="text" id="leagueId" name="leagueId" value="${resultSolo.leagueId}"/>	
-				<input type="text" id="tier" name="tier" value="${resultSolo.tier}"/>
-				<input type="text" id="leaguePoints" name="leaguePoints" value="${resultSolo.leaguePoints}"/>	 --%>	
-		  </div>
-		  
-		  <div id="tab-2" class="tab-content col-lg-5">
-				<c:set var="tier" value="${resultTeam.tier}" />
+			<div class="progress-bar progress-bar-striped progress-bar-animated " style="width:70%; margin-top: 10px;">70%</div>		  
 
-				<c:choose>
-				    <c:when test="${tier eq 'BRONZE'}">
-				        <img class="tierPng" src="htmlst/css/lolimg/bronze.png">
-				    </c:when>
-				    <c:when test="${tier eq 'SILVER'}">
-				       <img class="tierPng" src="htmlst/css/lolimg/silver.png">
-				    </c:when>
-				    <c:when test="${tier eq 'GOLD'}">
-				       <img class="tierPng" src="htmlst/css/lolimg/gold.png">
-				    </c:when>
-				    <c:when test="${tier eq 'PLATINUM'}">
-				        <img class="tierPng" src="htmlst/css/lolimg/platinum.png">
-				    </c:when>
-				    <c:when test="${tier eq 'DIAMOND'}">
-				       <img class="tierPng" src="htmlst/css/lolimg/diamond.png">
-				    </c:when>
-				    <c:when test="${tier eq 'MASTER'}">
-				        <img class="tierPng" src="htmlst/css/lolimg/master.png">
-				    </c:when>
-				    <c:when test="${tier eq 'CHALLENGER'}">
-				       <img class="tierPng" src="htmlst/css/lolimg/challenger.png">
-				    </c:when>
-				    <c:otherwise>
-				        <img class="tierPng" src="htmlst/css/lolimg/provisional.png">
-				    </c:otherwise>
-				</c:choose>
+			</div> <!-- tab2 End -->
 
-<%-- 				<input type="text" id="queueType" name="queueType" value="${resultTeam.queueType}"/>
-				<input type="text" id="hotStreak" name="hotStreak" value="${resultTeam.hotStreak}"/>
-				<input type="text" id="wins" name="wins" value="${resultTeam.wins}"/>
-				<input type="text" id="veteran" name="veteran" value="${resultTeam.veteran}"/>
-				<input type="text" id="losses" name="losses" value="${resultTeam.losses}"/>
-				<input type="text" id="playerOrTeamId" name="playerOrTeamId" value="${resultTeam.playerOrTeamId}"/>
-				<input type="text" id="leagueName" name="leagueName" value="${resultTeam.leagueName}"/>
-				<input type="text" id="playerOrTeamName" name="playerOrTeamName" value="${resultTeam.playerOrTeamName}"/>
-				<input type="text" id="inactive" name="inactive" value="${resultTeam.inactive}"/>
-				<input type="text" id="rank" name="rank" value="${resultTeam.rank}"/>
-				<input type="text" id="freshBlood" name="freshBlood" value="${resultTeam.freshBlood}"/>
-				<input type="text" id="leagueId" name="leagueId" value="${resultTeam.leagueId}"/>	
-				<input type="text" id="tier" name="tier" value="${resultTeam.tier}"/>
-				<input type="text" id="leaguePoints" name="leaguePoints" value="${resultTeam.leaguePoints}"/> --%>			
-		  </div>
-		</div> <!-- tab container END -->
-
+		</div><!-- tab container END -->
 		
 		</div>
 	  </div>
