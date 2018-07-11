@@ -40,7 +40,12 @@ public class HomeController {
 	
 	@RequestMapping("/")
 	public String mainhome(){
-		return "redirect:/html/index.html";
+		return "/index";
+	}
+	
+	@RequestMapping("/index")
+	public void index(){
+		
 	}
 	
 	@RequestMapping("/mainpage")
@@ -103,20 +108,16 @@ public class HomeController {
 	public String searchParse(Model model,
 							  @RequestParam("sumName") String sumname) throws UnsupportedEncodingException{
 		
-		String api_key="RGAPI-0cd68ae4-29fc-4d22-8532-983222c49b92";
+		String api_key="RGAPI-b7c7eb8a-eeee-4ac7-913d-b1cff3f160b5";
 		
 		String gamename = sumname;
 		
 		String gamename_Decode = URLDecoder.decode(gamename, "UTF-8");
 		
-		//String url = "https://kr.api.riotgames.com/lol/summoner/v3/summoners/by-name/%EC%A0%95%EA%B8%80%EB%A1%9C%EB%8B%A4%EC%9D%B4%EC%95%84%EA%B0%84%EB%8B%A4?api_key=RGAPI-ff444727-9804-4874-83a4-0c88ed8905ac";
 		String url = "https://kr.api.riotgames.com/lol/summoner/v3/summoners/by-name/"
 					  +gamename_Decode+"?api_key="+api_key;
-		System.out.println(gamename_Decode);
-		System.out.println("url : " + url);
 		
 		RestTemplate restTemplate = new RestTemplate();
-		
 		ObjectMapper objMapper = new ObjectMapper();
 		
 		String resultStr = "";
@@ -130,27 +131,35 @@ public class HomeController {
 			log.info("resultStr" + resultStr);
 			model.addAttribute("result", nameParse);
 			log.info("List : " + nameParse);
-			System.out.println(nameParse.getId());
+			long summonerid = nameParse.getId();
 			
+			List<IdParseVO> idparseList
+	            = new ArrayList<IdParseVO>();
+			
+			String url2 = "https://kr.api.riotgames.com/lol/league/v3/positions/by-summoner/"
+						  +summonerid+"?api_key="+api_key;
+			log.info("########################################################## 1번 try");
 			try{
-				long summonerid = nameParse.getId();
+/*				long summonerid = nameParse.getId();
 				
 				List<IdParseVO> idparseList
 		            = new ArrayList<IdParseVO>();
 				
 				String url2 = "https://kr.api.riotgames.com/lol/league/v3/positions/by-summoner/"
-							  +summonerid+"?api_key="+api_key;
+							  +summonerid+"?api_key="+api_key;*/
 				resultStr = restTemplate.getForObject(url2, String.class);
-				log.info("resultStr2" + resultStr);
+			/*	if(resultStr.equals("[]")){ result 값이 없을경우 IOException 으로보내서 처리를 해도됨.
+					log.info("################################################## if resultStr 없음");
+					
+					throw new IOException();
+				}*/
 				
 				CollectionType javaType = objMapper.getTypeFactory()
 		                  .constructCollectionType(List.class, IdParseVO.class);
 				
 				/*HashSet<IdParseVO> idParse = (HashSet<IdParseVO>) objMapper.readValue(resultStr, IdParseVO.class);*/
+
 				idparseList = objMapper.readValue(resultStr, javaType);
-				//model.addAttribute("result2", idparseList.get(0));
-				log.info("idParse : " + idparseList.get(0));
-				log.info("idParse : " + idparseList.size());
 				
 				if(idparseList.size() == 1){
 					if(idparseList.get(0).getQueueType().equals("RANKED_SOLO_5x5")){
@@ -159,7 +168,6 @@ public class HomeController {
 					}else if(idparseList.get(0).getQueueType().equals("RANKED_FLEX_SR")){
 						model.addAttribute("resultTeam", idparseList.get(0));
 						model.addAttribute("modelSize", idparseList.size());
-						log.info("else if");
 					}
 				}else if(idparseList.size() == 2){
 					if(idparseList.get(0).getQueueType().equals("RANKED_SOLO_5x5")){
@@ -171,28 +179,25 @@ public class HomeController {
 						model.addAttribute("resultSolo", idparseList.get(1));
 					}
 				}else{
-					model.addAttribute("unranked", nameParse);
+					model.addAttribute("unranked", 0);
+					model.addAttribute("msg", "레벨이 30이 아니거나 솔랭, 팀랭 둘 다 게임 수가 부족합니다.");
+					return "/searchSubmit";
 				}
 
 				return "/search";
-			}catch(Exception e){
+			}catch(IOException e){
 				System.out.println("id parse error");
-				e.printStackTrace();
+				/*e.printStackTrace();*/
+				return "/searchSubmit";
 			}
 			
 		} catch (IOException e) {
 			System.out.println("name parse error");
+			
 			e.printStackTrace();
 		}
 		
 		return "/search";
-		//log.info("parseList : " + parseList);
-		
-		//List<NameParseVO> result = parseList.getParseList();
-		
-		//log.info("result : " + result);
-		
-		//model.addAttribute("result", result);
 		
 	}
 	

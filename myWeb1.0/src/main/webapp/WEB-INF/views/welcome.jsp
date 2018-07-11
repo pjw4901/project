@@ -31,10 +31,5 @@
 		<input type="submit" value="관리자페이지">
 	</form>	
 </sec:authorize>
-
-${pageContext.request.userPrincipal.name} 님 환영합니다.<br>
-<input type="button" 
-	   value="로그아웃"
-	   onclick="location.href='${pageContext.request.contextPath}/login/login?logout'" />
 </body>
 </html>

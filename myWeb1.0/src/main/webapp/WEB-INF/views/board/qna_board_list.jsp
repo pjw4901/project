@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html lang="ko-kr">
 <head>
@@ -40,6 +41,12 @@
 	    background: linear-gradient(52deg, #5383e8, #3991ef 31%, #3892f0 32%, #3594f1 36%, #3594f1);
 	    border-radius: 0px;
 	}
+    .navbar-brand{
+		margin: 0;
+	}
+	.lol_logo{
+		padding-right: 10px;
+	}	
 
 	
 	</style>
@@ -195,13 +202,13 @@
 	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
 	        <i class="fa fa-bars"></i>
 	      </button>
-	      <a class="navbar-brand" href="${pageContext.request.contextPath}/html/index.html">LOL.DUO</a>
+	      <a class="navbar-brand" href="${pageContext.request.contextPath}/index"><img src="<c:url value='/htmlst/css/lolimg/logo-lol.png" class="lol_logo' />" style="display: inline-block;">LOL.DUO</a>
 	    </div>
 
 	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	      <ul class="nav navbar-nav navbar-right">
 	       <li class="nav-item">
-              <a class="nav-link" href="${pageContext.request.contextPath}/html/index.html">홈</a>
+              <a class="nav-link" href="${pageContext.request.contextPath}/index">홈</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="about.html">전적검색</a>
@@ -212,11 +219,30 @@
             <li class="nav-item">
               <a class="nav-link" href="contact.html">게임리스트</a>
             </li>
+            
+<sec:authorize access="!isAuthenticated()">
             <li class="nav-item">
               <a class="nav-link" href="${pageContext.request.contextPath}/login">
               <i class="fa fa-user-circle-o" aria-hidden="true"></i>로그인
               </a>
             </li>
+</sec:authorize>            
+<sec:authorize access="hasRole('ROLE_USER')">
+            <li class="nav-item">
+              <a class="nav-link" href="${pageContext.request.contextPath}/login/secured/welcome">
+              <i class="fa fa-user-circle-o" aria-hidden="true"></i>사용자님
+              </a>
+            </li>
+</sec:authorize>
+<sec:authorize access="hasRole('ROLE_ADMIN')">
+            <li class="nav-item">
+              <a class="nav-link" href="${pageContext.request.contextPath}/login/admin/welcome">
+              <i class="fa fa-user-circle-o" aria-hidden="true"></i>관리자님
+              </a>
+            </li>
+</sec:authorize>
+            
+            
 	      </ul>
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->

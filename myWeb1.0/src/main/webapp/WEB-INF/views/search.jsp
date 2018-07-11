@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html">
 <html lang="ko-kr">
 <head>
@@ -169,6 +170,17 @@
 		    $("#"+tab_id).addClass('current');
 		  }); //tab function
 		  
+		  if(${resultTeam.queueType == 'RANKED_FLEX_SR'&&modelSize == 1}){
+			  $('#cardDiv').hide();
+			  $('#progressDiv').hide();
+			  $('#progressHeadDiv').hide();
+			  $('#tierDiv').removeClass('col-lg-5');
+			  $('#tierDiv').addClass('col-lg-12');
+			  				  
+		  }else if(${unranked == 0}){
+			  alert("소환사 레벨이 30이 안되서 전적이 없습니다. 강해져서 와라 애송이")
+		  }
+		  
 		  var reswins = ${resultTeam.queueType == 'RANKED_FLEX_SR' &&modelSize == 1? 0:resultSolo.wins};
 		  var restotal = ${resultSolo.wins + resultSolo.losses};
 		  var percentage = reswins/restotal+100;
@@ -192,8 +204,8 @@
 		          borderWidth: 0,
 		          data: [${resultSolo.wins}, ${resultSolo.losses}]
 		        }
-			   ]
-		  }
+			   ]  
+		  };
 	
 		  var chDonut1 = document.getElementById("chDonut1");
 		  if (chDonut1) {
@@ -206,6 +218,15 @@
 		  
 		  //tab2 fun start
 		  $('#tab-2-btn').click(function(){
+			 
+			  if(${resultSolo.queueType == 'RANKED_SOLO_5x5'&&modelSize == 1}){
+				  $('#cardDiv2').hide();
+				  $('#progressDiv2').hide();
+				  $('#progressHeadDiv2').hide();
+				  $('#tierDiv2').removeClass('col-lg-5');
+				  $('#tierDiv2').addClass('col-lg-12');
+				  				  
+			  }
 			  var reswins2 = ${resultSolo.queueType == 'RANKED_SOLO_5x5'&&modelSize == 1?0:resultTeam.wins};
 			  var restotal2 = ${resultTeam.wins + resultSolo.losses};
 			  var percentage2 = reswins2/restotal2+100;
@@ -230,7 +251,7 @@
 			          data: [${resultTeam.wins}, ${resultTeam.losses}]
 			        }
 				   ]
-			  }
+			  };
 		
 			  var chDonut2 = document.getElementById("chDonut2");
 			  if (chDonut2) {
@@ -240,15 +261,16 @@
 			        options: donutOptions
 			    });
 			  } //pie chart end
-		  });
+		  });//tab2 fun end
 		});
 
 </script>
 </head>
 <body>
 
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light" id="mainNav">
-  <a class="navbar-brand" href="${pageContext.request.contextPath}/html/index.html"><img src="htmlst/css/lolimg/logo-lol.png" class="lol_logo">LOL.DUO</a><hr style="height: 15px; width: 0; border: 2px solid #fff;">
+  <a class="navbar-brand" href="${pageContext.request.contextPath}/index"><img src="htmlst/css/lolimg/logo-lol.png" class="lol_logo">LOL.DUO</a><hr style="height: 15px; width: 0; border: 2px solid #fff;">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -257,7 +279,7 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="${pageContext.request.contextPath}/html/index.html">홈</a>
+        <a class="nav-link" href="${pageContext.request.contextPath}/index">홈</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">게임리스트</a>
@@ -307,7 +329,7 @@
 		  	<h1><i class="fa fa-user" aria-hidden="true">&nbsp;&nbsp;</i>SOLO 전적</h1>
 		  	
 		  	<div class="row">
-			  	<div class="col-lg-5" style="display: inline-block; text-align: center">
+			  	<div id="tierDiv" class="col-lg-5" style="display: inline-block; text-align: center">
 			  	
 			  		<c:set var="tier1" value="${resultSolo.tier}" />
 	
@@ -353,7 +375,7 @@
 <%-- 			<c:choose>
 		 	  <c:when test="${resultTeam.queueType eq 'RANKED_FLEX_SR' || modelSize == 1 }">
 		 	   <div class="hidden" style="visibility: hidden;"> --%>
-				<div class="col-lg-7" style="display: inline-block;">
+				<div id="cardDiv" class="col-lg-7" style="display: inline-block;">
 					<div class="card">
 		                <div class="card-body">
 			                <p class="pieChart" align="center">
@@ -378,10 +400,10 @@
 			
 			</div><!-- tab1 rowdiv End -->
 			
-			<div class="row" style=" margin-left: 0px; margin-right: 0px; margin-top: 60px;">
+			<div id="progressHeadDiv" class="row" style=" margin-left: 0px; margin-right: 0px; margin-top: 60px;">
 				<h4>커뮤니티 전적</h4>
 			</div>
-			<div class="progress-bar progress-bar-striped progress-bar-animated " style="width:70%; margin-top: 10px;">70%</div>
+			<div id="progressDiv" class="progress-bar progress-bar-striped progress-bar-animated " style="width:70%; margin-top: 10px;">70%</div>
 		  	
 		  </div><!-- tab1 end -->
 		  
@@ -390,7 +412,7 @@
 		  	<h1><i class="fa fa-user" aria-hidden="true">&nbsp;&nbsp;</i>TEAM 전적</h1>
 		  	
 		  	<div class="row">
-			  	<div class="col-lg-5" style="display: inline-block; text-align: center">
+			  	<div id="tierDiv2" class="col-lg-5" style="display: inline-block; text-align: center">
 			  	
 				<c:set var="tier2" value="${resultTeam.tier}" />
 
@@ -431,7 +453,7 @@
 					
 				</div>
 				
-				<div class="col-lg-7" style="display: inline-block;">
+				<div id="cardDiv2" class="col-lg-7" style="display: inline-block;">
 					<div class="card">
 		                <div class="card-body">
 			                <p class="pieChart" align="center">
@@ -452,11 +474,10 @@
 			
 			</div><!-- tab2 rowdiv End -->
 			
-			<div class="row" style=" margin-left: 0px; margin-right: 0px; margin-top: 60px;">
+			<div id="progressHeadDiv2" class="row" style=" margin-left: 0px; margin-right: 0px; margin-top: 60px;">
 				<h4>커뮤니티 전적</h4>
 			</div>
-			<div class="progress-bar progress-bar-striped progress-bar-animated " style="width:70%; margin-top: 10px;">70%</div>		  
-
+			<div id="progressDiv2" class="progress-bar progress-bar-striped progress-bar-animated " style="width:70%; margin-top: 10px;">70%</div>	  
 			</div> <!-- tab2 End -->
 
 		</div><!-- tab container END -->

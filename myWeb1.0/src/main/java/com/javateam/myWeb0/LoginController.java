@@ -31,7 +31,7 @@ public class LoginController {
 		ModelAndView model = new ModelAndView();
 		model.addObject("title", "Spring Security Password Encoder");
 		model.addObject("message", "This page is for ROLE_ADMIN only!");
-		model.setViewName("admin");
+		model.setViewName("/admin/welcome");
 		
 		return model;
 	
@@ -40,10 +40,11 @@ public class LoginController {
 	@RequestMapping(value = "/secured/**",
 			method = RequestMethod.GET)
 	public String userPage() {
-	
-	return "/secured/welcome";
+		ModelAndView model = new ModelAndView();
+		model.setViewName("/secured/welcome");
+		return "/secured/welcome";
 
-}
+	}
 	
 	/*@RequestMapping("/login")
 	public ModelAndView login(@RequestParam(value="error", required = false) String error,

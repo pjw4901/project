@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ page session="true" pageEncoding="UTF-8"%>
 <html>
 <head>
@@ -41,6 +42,12 @@ header.masthead .site-heading {
 				border-radius: 10px;
 				border: 1px solid #000;
 			}
+.navbar-brand{
+	margin: 0;
+}
+.lol_logo{
+	padding-right: 10px;
+}			
 
 </style>
 
@@ -98,7 +105,7 @@ $(document).ready(function() {
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container">
-        <a class="navbar-brand" href="index.html">LOL.DUO</a>
+        <a class="navbar-brand" href="${pageContext.request.contextPath}/index"><img src="../htmlst/css/lolimg/logo-lol.png" class="lol_logo">LOL.DUO</a>
         <!-- 반응형 메뉴바 -->
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           Menu
@@ -107,22 +114,42 @@ $(document).ready(function() {
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="../html/index.html">홈</a>
+              <a class="nav-link" href="${pageContext.request.contextPath}/index">홈</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="about.html">전적검색</a>
+              <a class="nav-link" href="${pageContext.request.contextPath}/searchSubmit">전적검색</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="../board/list.do/1">게시판</a>
+              <a class="nav-link" href="${pageContext.request.contextPath}/board/list.do/1">게시판</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="contact.html">게임리스트</a>
+              <a class="nav-link" href="#">게임리스트</a>
             </li>
+            
+            
+<sec:authorize access="!isAuthenticated()">
             <li class="nav-item">
-              <a class="nav-link" href="../login">
+              <a class="nav-link" href="${pageContext.request.contextPath}/login">
               <i class="fa fa-user-circle-o" aria-hidden="true"></i>로그인
               </a>
             </li>
+</sec:authorize>            
+<sec:authorize access="hasRole('ROLE_USER')">
+            <li class="nav-item">
+              <a class="nav-link" href="${pageContext.request.contextPath}/login/secured/welcome">
+              <i class="fa fa-user-circle-o" aria-hidden="true"></i>사용자님
+              </a>
+            </li>
+</sec:authorize>
+<sec:authorize access="hasRole('ROLE_ADMIN')">
+            <li class="nav-item">
+              <a class="nav-link" href="${pageContext.request.contextPath}/login/admin/welcome">
+              <i class="fa fa-user-circle-o" aria-hidden="true"></i>관리자님
+              </a>
+            </li>
+</sec:authorize>
+            
+            
           </ul>
         </div>
       </div>
