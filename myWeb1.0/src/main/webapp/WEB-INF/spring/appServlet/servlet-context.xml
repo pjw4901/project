@@ -21,6 +21,9 @@
 	<!-- html bootstrap -->
 	<resources mapping="/htmlst/**" location="/resources/htmlst/" />
 	
+	<!-- mypage bootstrap -->
+	<resources mapping="/mypage/**" location="/resources/mypage/" />
+	
 	<!-- 사용할 html 경로 -->
     <resources mapping="/html/**" location="/WEB-INF/views/html/" />
 		

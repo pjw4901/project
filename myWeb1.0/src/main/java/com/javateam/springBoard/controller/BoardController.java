@@ -317,8 +317,41 @@ public class BoardController {
 		//return "/board/qna_board_list";
 	}
 	
+	@RequestMapping("/delete.do")
+	@ResponseBody
+	public String deleteBoard(@RequestParam("boardNum") int boardNum,
+							  Model model){
+		
+		log.info("################################ DeleteBoard");
+		log.info("Delete_boardNum : " + boardNum);
+		
+		boardSvc.deleteBoard(boardNum);
+		
+		
+		log.info("게시글을 성공적으로 지웠습니다.");
+		
+		return "성공";
+
+	}
 	
-	
+/*	@RequestMapping("/delete.do")
+	@ResponseBody
+	public List<BoardVO> deleteBoard(@RequestParam("boardNum") int boardNum,
+							  Model model){
+		
+		log.info("################################ DeleteBoard");
+		log.info("Delete_boardNum : " + boardNum);
+		
+		boardSvc.deleteBoard(boardNum);
+		int limit = boardSvc.getListCount();
+		int page = 1;
+		
+		
+		log.info("게시글을 성공적으로 지웠습니다.");
+		
+		return boardSvc.getArticleList(page, limit);
+
+	}*/
 	
 	
 	

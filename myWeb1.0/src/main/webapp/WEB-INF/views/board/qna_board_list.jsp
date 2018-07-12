@@ -279,10 +279,10 @@
 	<%@ include file="boardUpdateModal.jsp" %>
 	<!-- 게시글정보 수정(팝업) 끝 -->
 
-    <!-- Main Content -->
-    <div class="container" ng-app="boardUploadModal">
-      <div class="row">
-        <div class="col-lg-12 col-md-12 mx-auto">
+<!-- Main Content -->
+<div class="container" ng-app="boardUploadModal">
+  <div class="row">
+    <div class="col-lg-12 col-md-12 mx-auto">
         	
 	<h2 align="center">글 목록 </h2>
 	<br>
@@ -419,9 +419,9 @@
 	</section>
 	<!-- 게시판 리스트 끝 -->
 	
-			</div>
 		</div>
 	</div>
+</div>
 	
 	<hr />
     <!-- Footer -->

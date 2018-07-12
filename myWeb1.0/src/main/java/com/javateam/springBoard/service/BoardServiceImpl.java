@@ -78,4 +78,11 @@ public class BoardServiceImpl implements BoardService {
 		
 	}
 
+	@Override
+	public void deleteBoard(int boardNum) {
+		log.info("deleteBoard serviceImpl");
+		dao.delete(boardNum);
+		
+	}
+
 }

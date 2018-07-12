@@ -143,7 +143,7 @@ $(document).ready(function() {
 </sec:authorize>
 <sec:authorize access="hasRole('ROLE_ADMIN')">
             <li class="nav-item">
-              <a class="nav-link" href="${pageContext.request.contextPath}/login/admin/welcome">
+              <a class="nav-link" href="${pageContext.request.contextPath}/admin/adminpage">
               <i class="fa fa-user-circle-o" aria-hidden="true"></i>관리자님
               </a>
             </li>

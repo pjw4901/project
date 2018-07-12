@@ -58,6 +58,12 @@
 		 WHERE board_num=#{boardNum}
 	</update>
 	
+	<delete id="delete" parameterType="int">
+		DELETE board_tbl
+		 WHERE board_num=#{boardNum}
+	
+	</delete>
+	
 	
 
 </mapper>

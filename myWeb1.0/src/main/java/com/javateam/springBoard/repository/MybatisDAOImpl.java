@@ -115,13 +115,31 @@ public class MybatisDAOImpl implements MybatisDAO {
 
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.javateam.springBoard.repository.MybatisDAO#delete(int)
 	 */
 	@Override
-	public boolean delete(int boardNum) {
-		// TODO Auto-generated method stub
-		return false;
+	public void delete(int boardNum) {
+		log.info("deleteBoard DAOImpl");
+		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			
+			@Override
+			protected void doInTransactionWithoutResult(TransactionStatus status) {
+				try{
+					BoardMapper boardMapper = sqlSession.getMapper(BoardMapper.class);
+					boardMapper.delete(boardNum);
+					
+					System.out.println("delete DAOImpl success");
+				}catch(Exception e){
+					status.setRollbackOnly();
+					System.out.println("delete DAOImpl exception : " + e.getMessage());
+					
+				}
+				
+			}
+		});
+		
+		
 	}
 
 	/**

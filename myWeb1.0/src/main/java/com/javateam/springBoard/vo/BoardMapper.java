@@ -15,7 +15,7 @@ public interface BoardMapper {
 	void insert(BoardVO board);
 	List<BoardVO> list();
 	void update(BoardVO board);
-	boolean delete(int boardNum);
+	void delete(int boardNum);
 	BoardVO get(int boardNum);
 	List<BoardVO> getListByPageAndLimit(HashMap<String, Integer> map);
 	//List<BoardVO> getListByPageAndLimit(PageParamVO pageParamVO);
