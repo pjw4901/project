@@ -1,7 +1,12 @@
 package com.javateam.vo;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="users")
 public class Users {
-	
+
 	private String userid;
 	private String username;
 	private String userpw;

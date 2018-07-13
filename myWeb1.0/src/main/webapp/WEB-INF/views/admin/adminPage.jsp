@@ -33,7 +33,9 @@
     
 
 <script type="text/javascript">
+	
 	$(document).ready(function() {
+		//게시판 삭제 펑션
 		$(".deleteBtn").click(function(){
 			var deleteBtn = $(this);
 			var boardNum = "";
@@ -51,14 +53,56 @@
 				dataType : "text",
 				data : {boardNum : boardNum},
 				success : function(data){
-
+					alert("해당 데이터를 삭제했습니다.");
 					location.reload();
+					
 				}
-			});//ajax end
+			});//ajax end	
+		});//deleteBtn end
+		
+		//검색 펑션
+		$(".searchBtn").click(function() {
+			var userid = $('#userName').val();
 			
+			$.ajax({
+				url : "${pageContext.request.contextPath}/board/searchuser.do",
+				contentType : "application/json",
+				type : "get",
+				data : {userid : userid},
+				success : function(json){
+					
+					alert("성공");
+					var uservo = JSON.parse(JSON.stringify(json));
+					alert(uservo.userid);
+					
+					$("#username").text(uservo.userid);
+					$("#userid").text(uservo.summonerid);
+					$("#userlv").text(uservo.commlv);
+					
+					var wins = uservo.commwins;
+					var losses = uservo.commlosses;
+					var total = wins+losses;
+
+					 var percentage = wins/total*100;
+					document.getElementById("progress").innerHTML =
+	        			  '<div class="progress-bar progress-bar-striped progress-bar-animated bg-info" style="width:'+ Math.floor(percentage) + '%">' + Math.floor(percentage) + '%</div>';
+					$("#usercontent").text(uservo.commcontent);
+					
+					$("#usercard").show();
+				}
+			});// ajax end
+		});//검색 버튼 end
+		
+		//cardupdate Btn
+		$("#cardupdate").click(function(){
 			
 		});
-	});
+		
+		//card Close Btn
+		$("#cardclose").click(function(){
+			$("#usercard").hide();
+		});
+	});//document end
 	
 </script>
 </head>
@@ -81,10 +125,10 @@
             <a class="nav-link js-scroll-trigger" href="#about">About</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger korean" href="#experience">회원정보 관리</a>
+            <a class="nav-link js-scroll-trigger korean" href="#userscard">회원정보 관리</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger korean" href="#education">게시물 관리</a>
+            <a class="nav-link js-scroll-trigger korean" href="#boardlist">게시물 관리</a>
           </li>
         </ul>
       </div>
@@ -131,60 +175,53 @@
       </section>
 
 	<!-- 회원정보관리페이지 -->
-      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="experience">
+      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="userscard">
         <div class="my-auto">
           <h2 class="mb-5" lang="ko">회원정보관리 페이지</h2>
 
           <div class="resume-item d-flex flex-column flex-md-row mb-5">
             <div class="resume-content mr-auto">
-              <h3 class="mb-0">Senior Web Developer</h3>
-              <div class="subheading mb-3">Intelitec Solutions</div>
-              <p>Bring to the table win-win survival strategies to ensure proactive domination. At the end of the day, going forward, a new normal that has evolved from generation X is on the runway heading towards a streamlined cloud solution. User generated content in real-time will have multiple touchpoints for offshoring.</p>
-            </div>
-            <div class="resume-date text-md-right">
-              <span class="text-primary">March 2013 - Present</span>
-            </div>
-          </div>
-
-          <div class="resume-item d-flex flex-column flex-md-row mb-5">
-            <div class="resume-content mr-auto">
-              <h3 class="mb-0">Web Developer</h3>
-              <div class="subheading mb-3">Intelitec Solutions</div>
-              <p>Capitalize on low hanging fruit to identify a ballpark value added activity to beta test. Override the digital divide with additional clickthroughs from DevOps. Nanotechnology immersion along the information highway will close the loop on focusing solely on the bottom line.</p>
-            </div>
-            <div class="resume-date text-md-right">
-              <span class="text-primary">December 2011 - March 2013</span>
-            </div>
-          </div>
-
-          <div class="resume-item d-flex flex-column flex-md-row mb-5">
-            <div class="resume-content mr-auto">
-              <h3 class="mb-0">Junior Web Designer</h3>
-              <div class="subheading mb-3">Shout! Media Productions</div>
-              <p>Podcasting operational change management inside of workflows to establish a framework. Taking seamless key performance indicators offline to maximise the long tail. Keeping your eye on the ball while performing a deep dive on the start-up mentality to derive convergence on cross-platform integration.</p>
-            </div>
-            <div class="resume-date text-md-right">
-              <span class="text-primary">July 2010 - December 2011</span>
-            </div>
-          </div>
-
-          <div class="resume-item d-flex flex-column flex-md-row">
-            <div class="resume-content mr-auto">
-              <h3 class="mb-0">Web Design Intern</h3>
-              <div class="subheading mb-3">Shout! Media Productions</div>
-              <p>Collaboratively administrate empowered markets via plug-and-play networks. Dynamically procrastinate B2C users after installed base benefits. Dramatically visualize customer directed convergence without revolutionary ROI.</p>
-            </div>
-            <div class="resume-date text-md-right">
-              <span class="text-primary">September 2008 - June 2010</span>
+            
+              <div class="subheading mb-5">
+              	<div class="input-group mb-4 col-lg-4" style="padding: 0; position: absolute;">
+				  <input type="text" id="userName" name="userName" class="form-control" placeholder="사용자명을 검색합니다.">
+				  <span class="input-group-btn">
+					<button class="btn btn-secondary searchBtn">.DUO</button>
+				  </span>
+				</div>
+			  </div>
+			  
+             	<div class="card bg-light col-lg-6" id="usercard" style="padding-top: 15px; padding-bottom: 15px; margin: auto; display: none">
+             	  <img class="card-img-top" src="http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_0.jpg" alt="Card image">
+				  <div class="card-body">
+				  
+				    <h4 class="card-title" id="username"></h4>
+				    <lable lang="ko">게임아이디 :</lable><p class="card-text" id="userid" style="display: inline-block;"></p><br/>
+				    <label lang="ko">커뮤니티승률</label>
+				    <div class="progress" id="progress">
+					</div><br />
+					<label lang="ko">자기소개글</label>
+					<p class="card-text" id="usercontent"></p>
+				    
+				  </div>
+				  
+				  <div class="card-footer" style="background-color: #ffffff00; border: none;">
+					<div class="btn-group btn-block" role="group">
+					  <button id="cardupdate" type="button" class="btn btn-outline-secondary w-100">수정</button>
+					  <button id="cardclose" type="button" class="btn btn-outline-secondary w-100">닫기</button>
+					</div>
+				  </div>
+             	</div>
+             	             	
+             	
             </div>
           </div>
-
         </div>
 
       </section>
 
 	<!-- 게시물관리페이지 -->
-      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="education">
+      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="boardlist">
         <div class="my-auto">
           <h2 class="mb-5" lang="ko">게시물관리페이지</h2>
             <!-- 인자들 -->

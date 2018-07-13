@@ -6,6 +6,7 @@ package com.javateam.springBoard.service;
 import java.util.List;
 
 import com.javateam.springBoard.vo.BoardVO;
+import com.javateam.vo.CommUserVO;
 
 /**
  * @author ss
@@ -20,5 +21,6 @@ public interface BoardService {
 	void updateReadCount(int boardNum);
 	void updateBoard(BoardVO boardVO);
 	void deleteBoard(int boardNum);
+	CommUserVO getUser(String userid);
 
 }

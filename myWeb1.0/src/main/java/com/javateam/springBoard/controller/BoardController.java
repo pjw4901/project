@@ -20,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,6 +32,7 @@ import com.javateam.springBoard.service.BoardService;
 import com.javateam.springBoard.vo.BoardDTO;
 import com.javateam.springBoard.vo.BoardVO;
 import com.javateam.springBoard.vo.PageInfo;
+import com.javateam.vo.CommUserVO;
 
 import lombok.extern.java.Log;
 
@@ -317,6 +319,7 @@ public class BoardController {
 		//return "/board/qna_board_list";
 	}
 	
+	
 	@RequestMapping("/delete.do")
 	@ResponseBody
 	public String deleteBoard(@RequestParam("boardNum") int boardNum,
@@ -334,24 +337,35 @@ public class BoardController {
 
 	}
 	
-/*	@RequestMapping("/delete.do")
+	@RequestMapping(value="/searchuser.do",
+					produces="application/json; charset=UTF-8")
 	@ResponseBody
-	public List<BoardVO> deleteBoard(@RequestParam("boardNum") int boardNum,
-							  Model model){
+	public String searchCommuser(@RequestParam("userid") String userid,
+								Model model){
 		
-		log.info("################################ DeleteBoard");
-		log.info("Delete_boardNum : " + boardNum);
+		log.info("################################ searchUserid");
+		log.info("################################ input userid : " + userid);
+		ObjectMapper mapper = new ObjectMapper();
+		String json="";
 		
-		boardSvc.deleteBoard(boardNum);
-		int limit = boardSvc.getListCount();
-		int page = 1;
+		CommUserVO commUser = boardSvc.getUser(userid);
+		try{
+			json = mapper.writeValueAsString(commUser);
+		}catch(JsonProcessingException e){
+			log.info("Json1 error ");
+			e.printStackTrace();
+		}
 		
+		log.info("################################ commUser :" + commUser);
 		
-		log.info("게시글을 성공적으로 지웠습니다.");
+		model.addAttribute("commUser", commUser);
 		
-		return boardSvc.getArticleList(page, limit);
+		userid = commUser.getUserid();
+		
+		return json;
 
-	}*/
+	}
+	
 	
 	
 	

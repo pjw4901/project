@@ -21,6 +21,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.javateam.springBoard.vo.BoardMapper;
 import com.javateam.springBoard.vo.BoardVO;
 import com.javateam.springBoard.vo.PageParamVO;
+import com.javateam.vo.CommUserVO;
 
 import lombok.extern.java.Log;
 
@@ -242,6 +243,29 @@ public class MybatisDAOImpl implements MybatisDAO {
 		});
 		
 		
+	}
+
+	@Override
+	public CommUserVO getUser(String userid) {
+		log.info("commUserget(DAOImpl)");
+		
+		TransactionDefinition def = new DefaultTransactionDefinition();
+		TransactionStatus status = transactionManager.getTransaction(def);
+		
+		CommUserVO commUser = new CommUserVO();
+		
+		BoardMapper boardMapper = sqlSession.getMapper(BoardMapper.class);
+		
+		try{
+			commUser = boardMapper.getCommUser(userid);
+			transactionManager.commit(status);
+		}catch(Exception e){
+			log.info("get(DAOImpl) error");
+			transactionManager.rollback(status);
+
+		}	
+		
+		return commUser;
 	}
 
 }

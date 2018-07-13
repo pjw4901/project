@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.javateam.springBoard.repository.MybatisDAO;
 import com.javateam.springBoard.vo.BoardVO;
+import com.javateam.vo.CommUserVO;
 
 import lombok.extern.java.Log;
 
@@ -83,6 +84,12 @@ public class BoardServiceImpl implements BoardService {
 		log.info("deleteBoard serviceImpl");
 		dao.delete(boardNum);
 		
+	}
+
+	@Override
+	public CommUserVO getUser(String userid) {
+		log.info("commUser GET serviceImpl");
+		return dao.getUser(userid);
 	}
 
 }
