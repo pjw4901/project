@@ -178,6 +178,39 @@
 				});
 			});//게시글 수정 모달 : 전송 끝
 			
+			$("a[id^=userid]").click(function(e){
+				alert("검색ajax");
+				var userid = e.target.id.substring(6);
+				alert(userid);
+				
+				$.ajax({
+					url : "${pageContext.request.contextPath}/board/searchuser.do",
+					contentType : "application/json",
+					type : "get",
+					data : {userid : userid},
+					success : function(json){
+						
+						alert("성공");
+						var uservo = JSON.parse(JSON.stringify(json));
+						alert(uservo.userid);
+						
+						$("#username").text(uservo.userid);
+						$("#userid").text(uservo.summonerid);
+						$("#userlv").text(uservo.commlv);
+						
+						var wins = uservo.commwins;
+						var losses = uservo.commlosses;
+						var total = wins+losses;
+
+						 var percentage = wins/total*100;
+						document.getElementById("progress").innerHTML =
+		        			  '<div class="progress-bar progress-bar-striped progress-bar-animated bg-info" style="width:'+ Math.floor(percentage) + '%">' + Math.floor(percentage) + '%</div>';
+						$("#usercontent").text(uservo.commcontent);
+						
+					}
+				});// ajax end
+			});//검색 버튼 end
+			
 			
 		}); //document ready end(보기 모달 끝)
 		
@@ -278,6 +311,10 @@
 	<!-- 게시글정보 수정(팝업) 시작 -->
 	<%@ include file="boardUpdateModal.jsp" %>
 	<!-- 게시글정보 수정(팝업) 끝 -->
+	
+	<!-- 사용자정보 팝업 시작 -->
+	<%@ include file="boardUserModal.jsp" %>
+	<!-- 사용자정보 팝업) 끝 -->
 
 <!-- Main Content -->
 <div class="container" ng-app="boardUploadModal">
@@ -342,7 +379,7 @@
                				</c:if>
 						</td>
 		
-						<td class="boardnamecl"><a>${article.boardName}</a></td>
+						<td class="boardnamecl"><a href="#" id="userid${article.boardName}" data-toggle="modal" data-target="#userModal">${article.boardName}</a></td>
 						<td> <%-- boardDate Format 맞추기 --%>
 							<fmt:parseDate var="tmp" value="${article.boardDate}" pattern="yyyy-MM-dd HH:mm:ss" />
 							<fmt:formatDate value="${tmp}" pattern="yyyy년MM월dd일 HH:mm:ss"/>

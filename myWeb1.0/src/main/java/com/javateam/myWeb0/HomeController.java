@@ -117,7 +117,7 @@ public class HomeController {
 	public String searchParse(Model model,
 							  @RequestParam("sumName") String sumname) throws UnsupportedEncodingException{
 		
-		String api_key="RGAPI-9ec008af-5fb4-4c36-9929-e4e81ac0cf44";
+		String api_key="RGAPI-2a7a4d95-20a8-4ea0-b650-04530a553313";
 		
 		String gamename = sumname;
 		
