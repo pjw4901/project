@@ -178,10 +178,9 @@
 				});
 			});//게시글 수정 모달 : 전송 끝
 			
+			//유저정보보기 모달 시작
 			$("a[id^=userid]").click(function(e){
-				alert("검색ajax");
 				var userid = e.target.id.substring(6);
-				alert(userid);
 				
 				$.ajax({
 					url : "${pageContext.request.contextPath}/board/searchuser.do",

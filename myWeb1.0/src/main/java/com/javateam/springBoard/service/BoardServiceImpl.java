@@ -92,4 +92,11 @@ public class BoardServiceImpl implements BoardService {
 		return dao.getUser(userid);
 	}
 
+	@Override
+	public void updateUser(String userid, String content) {
+		log.info("commUser UPDATE serviceImpl");
+		dao.updateUser(userid, content);
+		
+	}
+
 }

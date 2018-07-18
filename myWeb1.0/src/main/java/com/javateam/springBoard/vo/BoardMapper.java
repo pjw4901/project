@@ -23,5 +23,6 @@ public interface BoardMapper {
 	//List<BoardVO> getListByPageAndLimit(PageParamVO pageParamVO);
 	void updateReadCount(int boardNum);
 	CommUserVO getCommUser(String user_id);
+	void updateCommUser(HashMap<String, String> map);
 
 }

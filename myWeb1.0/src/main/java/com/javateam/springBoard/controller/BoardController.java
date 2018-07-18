@@ -366,6 +366,39 @@ public class BoardController {
 
 	}
 	
+	@RequestMapping(value="/updateuser.do",
+			produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public String updateCommuser(@RequestParam("cardcontent") String cardcontent,
+								 @RequestParam("userid") String userid,
+								 Model model){
+	
+		log.info("################################ updateuser");
+		log.info("################################ input usercontent : " + cardcontent);
+		log.info("################################ input userid      : " + userid);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String json="";
+		
+		boardSvc.updateUser(userid, cardcontent);
+		log.info("################################ cardContent UPDATE SUCCESS");
+		
+		CommUserVO commUser = boardSvc.getUser(userid);
+		try{
+			json = mapper.writeValueAsString(commUser);
+		}catch(JsonProcessingException e){
+			log.info("Json1 error ");
+			e.printStackTrace();
+		}
+		
+		log.info("################################ commUser :" + commUser);
+		
+		model.addAttribute("commUser", commUser);
+		
+		return json;
+	
+	}
+	
 	
 	
 	

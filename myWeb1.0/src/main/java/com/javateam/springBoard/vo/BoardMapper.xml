@@ -68,6 +68,12 @@
 		SELECT * FROM comm_users WHERE user_id=#{user_id}
 	</select>
 	
+	<update id="updateCommUser" parameterType="hashmap">
+		UPDATE comm_users SET
+		        comm_content=#{comm_content}
+		 WHERE user_id=#{user_id}
+	</update>
+	
 	
 
 </mapper>

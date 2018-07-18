@@ -97,7 +97,7 @@
 <sec:authorize access="hasRole('ROLE_USER')">
             <li class="nav-item">
               <a class="nav-link" href="${pageContext.request.contextPath}/login/secured/welcome">
-              <i class="fa fa-user-circle-o" aria-hidden="true"></i>사용자님
+              <i class="fa fa-user-circle-o" aria-hidden="true">&nbsp;</i>${pageContext.request.userPrincipal.name}님
               </a>
             </li>
 </sec:authorize>

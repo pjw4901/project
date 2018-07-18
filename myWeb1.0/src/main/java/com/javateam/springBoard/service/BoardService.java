@@ -22,5 +22,6 @@ public interface BoardService {
 	void updateBoard(BoardVO boardVO);
 	void deleteBoard(int boardNum);
 	CommUserVO getUser(String userid);
+	void updateUser(String userid, String content);
 
 }

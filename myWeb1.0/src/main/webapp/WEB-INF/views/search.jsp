@@ -178,7 +178,7 @@
 			  $('#tierDiv').addClass('col-lg-12');
 			  				  
 		  }else if(${unranked == 0}){
-			  alert("소환사 레벨이 30이 안되서 전적이 없습니다. 강해져서 와라 애송이")
+			  alert("소환사 레벨이 30이 안되거나 판수가 부족하여 전적이 없습니다.")
 		  }
 		  
 		  var reswins = ${resultTeam.queueType == 'RANKED_FLEX_SR' &&modelSize == 1? 0:resultSolo.wins};
@@ -204,7 +204,7 @@
 		          borderWidth: 0,
 		          data: [${resultSolo.wins}, ${resultSolo.losses}]
 		        }
-			   ]  
+			   ]
 		  };
 	
 		  var chDonut1 = document.getElementById("chDonut1");
@@ -288,6 +288,7 @@
         <a class="nav-link" href="${pageContext.request.contextPath}/board/list.do/1">게시판</a>
       </li>
     </ul>
+    <!-- navbar searchForm -->
     <form class="form-inline my-2 my-lg-0" id="searchForm" name="searchForm" action="<c:url value='/search' />" method="POST">
       <input class="form-control mr-sm-2" id="sumName" name="sumName" type="search" placeholder="Search" aria-label="Search">
       <button class="btn btn-secondary" type="submit">.DUO</button>
@@ -300,7 +301,7 @@
    <div class="container" style="padding-top: 100px;">
 	<div class="row">
      <div class="col-lg-10 col-md-12 mx-auto">   
-       	
+       	<!-- USER Profile Content -->
        	<div class="profileDiv">
        		<div>
 				<img src="http://ddragon.leagueoflegends.com/cdn/8.13.1/img/profileicon/${result.profileIconId}.png" style="width: 150px;">
@@ -316,6 +317,7 @@
 		
 		<hr>
 
+		<!-- tab Content Start -->
 		<div class="container tabContainer">
 		 
 		  <ul class="tabs">
