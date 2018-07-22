@@ -197,7 +197,8 @@ $(document).ready(function() {
 				<div class="control-group">
              		<div class="form-group floating-label-form-group controls">
                 		<label>userid</label>
-                		<input type="text" class="form-control" placeholder="ID" id = "j_username" name="j_username" required data-validation-required-message="Please enter your name.">
+                		<input type="text" class="form-control" placeholder="ID" id = "j_username" name="j_username" 
+                		required data-validation-required-message="Please enter your name.">
                 		<p class="help-block text-danger"></p>
               		</div>
            		</div>			   
@@ -211,7 +212,8 @@ $(document).ready(function() {
 				<div class="control-group">
              		<div class="form-group floating-label-form-group controls">
                 		<label>password</label>
-                		<input type="password"  class="form-control" placeholder="PASSWORD" id="j_password" name="j_password" required data-validation-required-message="Please enter your name.">
+                		<input type="password"  class="form-control" placeholder="PASSWORD" id="j_password" name="j_password" 
+                		required data-validation-required-message="Please enter your name.">
                 		<p class="help-block text-danger"></p>
               		</div>
            		</div>						

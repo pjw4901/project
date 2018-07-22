@@ -117,7 +117,7 @@ public class HomeController {
 	public String searchParse(Model model,
 							  @RequestParam("sumName") String sumname) throws UnsupportedEncodingException{
 		
-		String api_key="RGAPI-2a7a4d95-20a8-4ea0-b650-04530a553313";
+		String api_key="RGAPI-9d035a68-8c30-4e39-ab05-66464cea3212";
 		
 		String gamename = sumname;
 		
@@ -162,12 +162,11 @@ public class HomeController {
 					
 					throw new IOException();
 				}*/
+				/*HashSet<IdParseVO> idParse = (HashSet<IdParseVO>) objMapper.readValue(resultStr, IdParseVO.class);*/
 				
 				CollectionType javaType = objMapper.getTypeFactory()
 		                  .constructCollectionType(List.class, IdParseVO.class);
 				
-				/*HashSet<IdParseVO> idParse = (HashSet<IdParseVO>) objMapper.readValue(resultStr, IdParseVO.class);*/
-
 				idparseList = objMapper.readValue(resultStr, javaType);
 				
 				if(idparseList.size() == 1){

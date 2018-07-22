@@ -2,7 +2,7 @@
     	 pageEncoding="UTF-8"%>
     	 
     	   
-    <!-- 게시글정보 보기(팝업) -->
+    <!-- 유저정보 보기(팝업) -->
 	<div class="modal fade" id="userModal" role="dialog">
 	  <div class="modal-dialog modal-sm">
 	  

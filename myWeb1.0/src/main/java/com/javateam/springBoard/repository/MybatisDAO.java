@@ -22,5 +22,6 @@ public interface MybatisDAO {
 	List<BoardVO> getListByPageAndLimit(int page, int limit);
 	void updateReadCount(int boardNum);
 	CommUserVO getUser(String userid);
+	void updateUser(String userid, String content);
 
 }

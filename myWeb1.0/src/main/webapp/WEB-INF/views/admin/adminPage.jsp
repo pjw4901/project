@@ -30,7 +30,16 @@
     <!-- Bootstrap core JavaScript -->
     <script src="<c:url value='/mypage/vendor/jquery/jquery.min.js'/> "></script>
     <script src="<c:url value='/mypage/vendor/bootstrap/js/bootstrap.bundle.min.js'/> "></script>
-    
+<style>
+    textarea {
+      width: 100%;
+      resize: none;
+      overflow-y: hidden; /* prevents scroll bar flash */
+      padding: 1.1em; /* prevents text jump on Enter keypress */
+      padding-bottom: 0.2em;
+      line-height: 1.6;
+    }
+</style>
 
 <script type="text/javascript">
 	
@@ -95,7 +104,27 @@
 		
 		//cardupdate Btn
 		$("#cardupdate").click(function(){
-			
+			var cardcontent = $('#usercontent').val();
+			var userid = $('#userName').val();
+			$.ajax({
+				url : "${pageContext.request.contextPath}/board/updateuser.do",
+				contentType : "application/json",
+				type : "get",
+				data : {userid : userid,
+						cardcontent : cardcontent},
+				success : function(json){
+					
+					alert("성공");
+					var uservo = JSON.parse(JSON.stringify(json));
+					alert(uservo.userid);
+					
+					$("#username").text(uservo.userid);
+					$("#userid").text(uservo.summonerid);
+					$("#userlv").text(uservo.commlv);
+					$("#usercontent").text(uservo.commcontent);
+
+				}
+			});
 		});
 		
 		//card Close Btn
@@ -171,6 +200,8 @@
               </a>
             </li>
           </ul>
+          <br/><br/>
+          <input type="submit" class="btn btn-secondary" id="logout" name="logout" value="로그아웃" onclick="location.href='${pageContext.request.contextPath}/login/logout'" >
         </div>
       </section>
 
@@ -200,8 +231,9 @@
 				    <label lang="ko">커뮤니티승률</label>
 				    <div class="progress" id="progress">
 					</div><br />
-					<label lang="ko">자기소개글</label>
-					<p class="card-text" id="usercontent"></p>
+					<label lang="ko">자기소개글</label><br/>
+					<textarea rows="4" cols="60" id="usercontent">
+					</textarea>
 				    
 				  </div>
 				  

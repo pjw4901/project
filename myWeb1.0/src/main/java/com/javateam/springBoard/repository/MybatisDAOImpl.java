@@ -260,12 +260,42 @@ public class MybatisDAOImpl implements MybatisDAO {
 			commUser = boardMapper.getCommUser(userid);
 			transactionManager.commit(status);
 		}catch(Exception e){
-			log.info("get(DAOImpl) error");
+			log.info("get(DAOImpl) error ");
+			e.printStackTrace();
 			transactionManager.rollback(status);
 
 		}	
 		
 		return commUser;
+	}
+
+	@Override
+	public void updateUser(String userid, String content) {
+		log.info("commUserupdate(DAOImpl)");
+		log.info("dao userid : " + userid);
+		log.info("dao content : " + content);
+		
+		HashMap<String, String> map = new HashMap<String, String>();
+		
+		map.put("user_id", userid);
+		map.put("comm_content", content);
+		
+		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			
+			@Override
+			protected void doInTransactionWithoutResult(TransactionStatus status) {
+				try{
+					BoardMapper boardMapper = sqlSession.getMapper(BoardMapper.class);
+					boardMapper.updateCommUser(map);
+					log.info("success updateUser");
+				}catch(Exception e){
+					log.info("updateUser(DAOImpl) error");
+					status.setRollbackOnly();
+				}
+
+			}
+		});
+		
 	}
 
 }
